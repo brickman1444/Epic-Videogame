@@ -6,13 +6,13 @@ public class BearSpin : MonoBehaviour {
     [SerializeField] float spinSpeed = 0.0f;
     [SerializeField] KeyCode spinKey;
 
-    bool spinning = false;
+    public bool spinning { get; private set; }
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
+    void Start()
+    {
+        spinning = false;
+    }
+
 	// Update is called once per frame
 	void Update () {
 
@@ -35,10 +35,10 @@ public class BearSpin : MonoBehaviour {
         while (angle < 360)
         {
             angle += Time.deltaTime * spinSpeed;
-            Debug.Log(angle);
             transform.Rotate(Vector3.forward, Time.deltaTime * spinSpeed);
             yield return null;
         }
+        transform.rotation = Quaternion.identity;
         spinning = false;
     }
 }
