@@ -1,16 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RandomFishGrow : MonoBehaviour {
+[RequireComponent(typeof(BearSpin))]
+public class RandomBearSpin : MonoBehaviour {
 
     [SerializeField] float minWait = 0.0f;
     [SerializeField] float maxWait = 0.0f;
 
-    FishGrow FishGrow = null;
+    BearSpin bearSpin = null;
 
 	// Use this for initialization
 	void Start () {
-        FishGrow = GetComponent<FishGrow>();
+        bearSpin = GetComponent<BearSpin>();
         StartCoroutine(SpinManagerRoutine());
 	}
 
@@ -24,7 +25,7 @@ public class RandomFishGrow : MonoBehaviour {
 
         while (true)
         {
-            FishGrow.Grow();
+            bearSpin.Spin();
             float waitTime = Random.Range(minWait, maxWait);
             yield return new WaitForSeconds(waitTime);
         }
