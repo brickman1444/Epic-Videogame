@@ -4,7 +4,6 @@ using System.Collections;
 public class BearSpin : MonoBehaviour {
 
     [SerializeField] float spinSpeed = 0.0f;
-    [SerializeField] KeyCode spinKey;
 
     public bool spinning { get; private set; }
 
@@ -13,17 +12,7 @@ public class BearSpin : MonoBehaviour {
         spinning = false;
     }
 
-	// Update is called once per frame
-	void Update () {
-
-        if ( !spinning && Input.GetKeyDown(spinKey) )
-        {
-            Spin();
-        }
-
-	}
-
-    void Spin()
+    public void Spin()
     {
         StartCoroutine(SpinRoutine());
     }
