@@ -7,6 +7,13 @@ public class FishGrow : MonoBehaviour {
 
     Vector3 originalScale = Vector3.zero;
 
+    public bool growing { get; private set; }
+
+    void Start()
+    {
+        growing = false;
+    }
+
     public void Grow()
     {
         originalScale = transform.localScale;
@@ -15,6 +22,7 @@ public class FishGrow : MonoBehaviour {
 
     IEnumerator GrowRoutine()
     {
+        growing = true;
         float t = 0;
         while (t < Mathf.PI)
         {
@@ -23,6 +31,7 @@ public class FishGrow : MonoBehaviour {
             transform.localScale = uniformScale * originalScale;
             yield return null;
         }
-        transform.rotation = Quaternion.identity;
+        transform.localScale = originalScale;
+        growing = false;
     }
 }
