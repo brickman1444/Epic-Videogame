@@ -9,6 +9,9 @@ public class Driving : MonoBehaviour {
     [SerializeField] float brakes = 0.0f;
     [SerializeField] float turningSpeed = 0.0f;
 
+    [SerializeField] string gasAxis = "";
+    [SerializeField] string turnAxis = "";
+
     float speed = 0.0f;
 
     Rigidbody rigidbody = null;
@@ -23,7 +26,7 @@ public class Driving : MonoBehaviour {
 
         Vector3 forward = transform.rotation * localForward;
 
-        float gasInput = Input.GetAxis("Vertical");
+        float gasInput = Input.GetAxis(gasAxis);
 
         if (gasInput > 0)
         {
@@ -39,11 +42,7 @@ public class Driving : MonoBehaviour {
             rigidbody.velocity = maxSpeed * rigidbody.velocity.normalized;
         }
 
-        Debug.Log(rigidbody.velocity.magnitude);
-
-        //transform.position += Time.deltaTime * speed * forward;
-
-        float turningInput = Input.GetAxis("Horizontal");
+        float turningInput = Input.GetAxis(turnAxis);
 
         transform.Rotate(-Vector3.forward, Time.deltaTime * turningSpeed * turningInput);
 
