@@ -6,14 +6,16 @@ public class Driving : MonoBehaviour {
     [SerializeField] Vector3 localForward = Vector3.zero;
     [SerializeField] float acceleration = 0.0f;
     [SerializeField] float maxSpeed = 0.0f;
-    [SerializeField] float friction = 0.0f;
+    [SerializeField] float brakes = 0.0f;
     [SerializeField] float turningSpeed = 0.0f;
 
     float speed = 0.0f;
 
+    Rigidbody rigidbody = null;
+
 	// Use this for initialization
 	void Start () {
-	
+        rigidbody = GetComponent<Rigidbody>();
 	}
 	
 	// Update is called once per frame
@@ -23,36 +25,23 @@ public class Driving : MonoBehaviour {
 
         float gasInput = Input.GetAxis("Vertical");
 
-        if (gasInput > 0.01f || gasInput < -0.01f)
+        if (gasInput > 0)
         {
-            // Real input
-            speed += Time.deltaTime * acceleration * gasInput;
-            if (speed > maxSpeed)
-            {
-                speed = maxSpeed;
-            }
-            else if (speed < -maxSpeed)
-            {
-                speed = -maxSpeed;
-            }
+            rigidbody.AddForce(forward * Time.deltaTime * acceleration);
         }
-        else
+        else if (gasInput < 0)
         {
-            // no gas pedal
-            if (speed > 0.01f || speed < -0.01f)
-            {
-                float frictionDirection = -speed / Mathf.Abs(speed);
-                speed += Time.deltaTime * friction * frictionDirection;
-            }
-            else
-            {
-                speed = 0.0f;
-            }
+            rigidbody.velocity *= brakes;
         }
 
-        Debug.Log(speed);
+        if (rigidbody.velocity.magnitude > maxSpeed)
+        {
+            rigidbody.velocity = maxSpeed * rigidbody.velocity.normalized;
+        }
 
-        transform.position += Time.deltaTime * speed * forward;
+        Debug.Log(rigidbody.velocity.magnitude);
+
+        //transform.position += Time.deltaTime * speed * forward;
 
         float turningInput = Input.GetAxis("Horizontal");
 
