@@ -18,11 +18,13 @@ public class Tile : MonoBehaviour {
     [SerializeField]
     float snapMargin = 0.0f;
 
+    LineRenderer lineRenderer = null;
+
     const float halfSize = 0.51f;
 
 	// Use this for initialization
 	void Start () {
-	
+        lineRenderer = GetComponentInChildren<LineRenderer>();
 	}
 	
 	// Update is called once per frame
@@ -72,8 +74,7 @@ public class Tile : MonoBehaviour {
                 {
                     //Debug.Log(outInfo.collider.gameObject.name);
                     transform.position = downInfo.transform.position + transform.up * (1.0f * transform.localScale.y + snapMargin);
-                    targetTile.parent = this;
-                    child = targetTile;
+                    targetTile.ConnectToParent(this);
                 }
             }
         }
@@ -91,11 +92,17 @@ public class Tile : MonoBehaviour {
                     {
                         //Debug.Log(outInfo.collider.gameObject.name);
                         transform.position = upInfo.transform.position + -transform.up * (1.0f * transform.localScale.y + snapMargin);
-                        targetTile.child = this;
-                        parent = targetTile;
+                        this.ConnectToParent(targetTile);
                     }
                 }
             }
         }
+    }
+
+    void ConnectToParent(Tile newParent)
+    {
+        parent = newParent;
+        parent.child = this;
+        lineRenderer.SetPosition(1, new Vector3(0,1f,0.2f));
     }
 }
