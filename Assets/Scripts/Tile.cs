@@ -40,13 +40,11 @@ public class Tile : MonoBehaviour {
     {
         if (parent)
         {
-            parent.child = null;
-            parent = null;
+            DisconnectFromParent(parent);
         }
         if (child)
         {
-            child.parent = null;
-            child = null;
+            child.DisconnectFromParent(this);
         }
         //Debug.Log("Mouse down");
         isBeingDragged = true;
@@ -103,6 +101,13 @@ public class Tile : MonoBehaviour {
     {
         parent = newParent;
         parent.child = this;
-        lineRenderer.SetPosition(1, new Vector3(0,1f,0.2f));
+        lineRenderer.SetPosition(1, new Vector3(0,1f,0.3f));
+    }
+
+    void DisconnectFromParent(Tile oldParent)
+    {
+        oldParent.child = null;
+        parent = null;
+        lineRenderer.SetPosition(1, Vector3.zero);
     }
 }
