@@ -7,6 +7,10 @@ public class DragAndDrop : MonoBehaviour {
     bool isBeingDragged = false;
     [SerializeField]
     float cameraDistance = 0.0f;
+    [SerializeField]
+    float snapTestDistance = 0.0f;
+
+    const float snapTestMinDistanceBase = 0.51f;
 
 	// Use this for initialization
 	void Start () {
@@ -32,5 +36,16 @@ public class DragAndDrop : MonoBehaviour {
     {
         //Debug.Log("Mouse up");
         isBeingDragged = false;
+        TryToSnap();
+    }
+
+    void TryToSnap()
+    {
+        RaycastHit2D outInfo = Physics2D.Raycast(transform.position + -transform.up * snapTestMinDistanceBase * transform.localScale.y, -transform.up, snapTestDistance);
+
+        if (outInfo && outInfo.collider && outInfo.collider.gameObject)
+        {
+            Debug.Log(outInfo.collider.gameObject.name);
+        }
     }
 }
