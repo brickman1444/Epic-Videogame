@@ -10,7 +10,9 @@ public class Tile : MonoBehaviour {
     [SerializeField, ReadOnly]
     Tile child = null;
     [SerializeField]
-    float cameraDistance = 0.0f;
+    float zPosition = 0.0f;
+    [SerializeField]
+    float grabbingDistance = 0.0f;
     [SerializeField]
     float snapTestDistance = 0.0f;
     [SerializeField]
@@ -28,7 +30,7 @@ public class Tile : MonoBehaviour {
     {
         if (isBeingDragged)
         {
-            transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cameraDistance));
+            transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, grabbingDistance));
         }
 	}
 
@@ -37,10 +39,12 @@ public class Tile : MonoBehaviour {
         if (parent)
         {
             parent.child = null;
+            parent = null;
         }
         if (child)
         {
             child.parent = null;
+            child = null;
         }
         //Debug.Log("Mouse down");
         isBeingDragged = true;
@@ -50,24 +54,46 @@ public class Tile : MonoBehaviour {
     {
         //Debug.Log("Mouse up");
         isBeingDragged = false;
+        transform.position = transform.position.SetZ(zPosition);
         TryToSnap();
     }
 
     void TryToSnap()
     {
-        RaycastHit2D outInfo = Physics2D.Raycast(transform.position + -transform.up * halfSize * transform.localScale.y, -transform.up, snapTestDistance);
+        // Try to snap down
+        RaycastHit2D downInfo = Physics2D.Raycast(transform.position + -transform.up * halfSize * transform.localScale.y, -transform.up, snapTestDistance);
 
-        if (outInfo && outInfo.collider && outInfo.collider.gameObject)
+        if (downInfo && downInfo.collider && downInfo.collider.gameObject)
         {
-            Tile targetTile = outInfo.collider.GetComponent<Tile>();
+            Tile targetTile = downInfo.collider.GetComponent<Tile>();
             if (targetTile)
             {
                 if (targetTile.parent == null)
                 {
                     //Debug.Log(outInfo.collider.gameObject.name);
-                    transform.position = outInfo.transform.position + transform.up * (1.0f * transform.localScale.y + snapMargin);
+                    transform.position = downInfo.transform.position + transform.up * (1.0f * transform.localScale.y + snapMargin);
                     targetTile.parent = this;
                     child = targetTile;
+                }
+            }
+        }
+        else
+        {
+            // Try to snap up
+            RaycastHit2D upInfo = Physics2D.Raycast(transform.position + transform.up * halfSize * transform.localScale.y, transform.up, snapTestDistance);
+
+            if (upInfo && upInfo.collider && upInfo.collider.gameObject)
+            {
+                Tile targetTile = upInfo.collider.GetComponent<Tile>();
+                if (targetTile)
+                {
+                    if (targetTile.child == null)
+                    {
+                        //Debug.Log(outInfo.collider.gameObject.name);
+                        transform.position = upInfo.transform.position + -transform.up * (1.0f * transform.localScale.y + snapMargin);
+                        targetTile.child = this;
+                        parent = targetTile;
+                    }
                 }
             }
         }
