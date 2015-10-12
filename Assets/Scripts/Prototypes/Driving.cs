@@ -12,9 +12,7 @@ public class Driving : MonoBehaviour {
     [SerializeField] string gasAxis = "";
     [SerializeField] string turnAxis = "";
 
-    float speed = 0.0f;
-
-    Rigidbody rigidbody = null;
+    new Rigidbody rigidbody = null;
 
 	// Use this for initialization
 	void Start () {

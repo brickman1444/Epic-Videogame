@@ -5,7 +5,7 @@ public class OffRoadRespawn : MonoBehaviour {
 
     Vector3 respawnPos = Vector3.zero;
     Quaternion respawnRot = Quaternion.identity;
-    Rigidbody rigidbody = null;
+    new Rigidbody rigidbody = null;
 
 	// Use this for initialization
 	void Start () {
