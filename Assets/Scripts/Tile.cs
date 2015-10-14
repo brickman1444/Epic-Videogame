@@ -1,7 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
+using UnityEngine.UI;
 
 public class Tile : MonoBehaviour {
+
+    public enum Key
+    {
+        Invalid = 0,
+        Start,
+        Goal,
+        A,
+        B,
+        C,
+        D,
+        E,
+        F,
+        G,
+        H,
+        I,
+        J,
+        K,
+        L,
+        M,
+        N,
+    }
 
     [SerializeField,ReadOnly]
     bool isBeingDragged = false;
@@ -17,6 +40,10 @@ public class Tile : MonoBehaviour {
     float snapTestDistance = 0.0f;
     [SerializeField]
     float snapMargin = 0.0f;
+    [SerializeField]
+    Key topKey = Key.Invalid;
+    [SerializeField]
+    Key bottomKey = Key.Invalid;
 
     LineRenderer lineRenderer = null;
 
@@ -26,7 +53,16 @@ public class Tile : MonoBehaviour {
 	void Start () {
         lineRenderer = GetComponentInChildren<LineRenderer>();
 	}
-	
+
+    public void Initialize(string topKeyString, string bottomKeyString, string text)
+    {
+        topKey = (Key) Enum.Parse(typeof(Key), topKeyString, true);
+        bottomKey = (Key)Enum.Parse(typeof(Key), bottomKeyString, true);
+
+        Text uiText = GetComponentInChildren<Text>();
+        uiText.text = text;
+    }
+
 	// Update is called once per frame
 	void Update ()
     {
