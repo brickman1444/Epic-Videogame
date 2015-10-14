@@ -1,9 +1,19 @@
 {
 	"Tiles": [
 		{
-			"TopKey": "A",
-			"BottomKey": "B",
-			"Text": "Bigfoot exists because the Bible says so."
+			"TopKey": "Start",
+			"BottomKey": "C",
+			"Text": "I saw bigfoot tracks one time."
+		},
+		{
+			"TopKey": "Start",
+			"BottomKey": "A",
+			"Text": "Bigfoot looks crazy and hard to believe."
+		},
+		{
+			"TopKey": "C",
+			"BottomKey": "G",
+			"Text": "If there are Bigfoot tracks, then there is evidence of Bigfoot."
 		},
 	]
 }
