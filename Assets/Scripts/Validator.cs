@@ -44,6 +44,16 @@ public class Validator : SingletonBehaviour<Validator>
                 return;
             }
 
+            if (currentTile.parent == null)
+            {
+                break;
+            }
+
+            if (currentTile.topKey != currentTile.parent.bottomKey)
+            {
+                break;
+            }
+
             currentTile = currentTile.parent;
         }
 

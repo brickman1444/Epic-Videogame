@@ -51,9 +51,9 @@ public class Tile : MonoBehaviour {
     [SerializeField]
     float snapMargin = 0.0f;
     [SerializeField]
-    Key topKey = Key.Invalid;
+    Key _topKey = Key.Invalid;
     [SerializeField]
-    Key bottomKey = Key.Invalid;
+    Key _bottomKey = Key.Invalid;
     [SerializeField]
     GameObject goalEffect = null;
     [SerializeField]
@@ -74,6 +74,18 @@ public class Tile : MonoBehaviour {
     {
         get { return _parent; }
         private set { _parent = value; }
+    }
+
+    public Key topKey
+    {
+        get { return _topKey; }
+        private set { _topKey = value; }
+    }
+
+    public Key bottomKey
+    {
+        get { return _bottomKey; }
+        private set { _bottomKey = value; }
     }
 
 	// Use this for initialization
