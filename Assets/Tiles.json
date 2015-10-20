@@ -1,19 +1,34 @@
 {
 	"Tiles": [
 		{
-			"TopKey": "Start",
+			"TopKey": "Goal",
 			"BottomKey": "C",
-			"Text": "I saw bigfoot tracks one time."
+			"Text": "If kids are good for the community, then it is good to have kids."
+		},
+		{
+			"TopKey": "B",
+			"BottomKey": "C",
+			"Text": "If kids will make income and spend money, they are good for the community."
 		},
 		{
 			"TopKey": "Start",
 			"BottomKey": "A",
-			"Text": "Bigfoot looks crazy and hard to believe."
+			"Text": "Kids grow up to be adults."
 		},
 		{
-			"TopKey": "C",
-			"BottomKey": "G",
-			"Text": "If there are Bigfoot tracks, then there is evidence of Bigfoot."
+			"TopKey": "A",
+			"BottomKey": "B",
+			"Text": "If kids grow up to be adults, then they will make income and spend money."
+		},
+		{
+			"TopKey": "A",
+			"BottomKey": "D",
+			"Text": "If kids grow up to be adults, they can grow up to be police officers."
+		},
+		{
+			"TopKey": "D",
+			"BottomKey": "C",
+			"Text": "If kids can grow up to be police officers, they are good for the community."
 		},
 	]
 }
