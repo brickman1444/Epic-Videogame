@@ -26,12 +26,22 @@ public class Tile : MonoBehaviour {
         N,
     }
 
+    public enum TileType
+    {
+        Invalid = 0,
+        Start,
+        Goal,
+        Middle,
+    }
+
     [SerializeField,ReadOnly]
     bool isBeingDragged = false;
     [SerializeField, ReadOnly]
-    Tile parent = null;
+    Tile _parent = null;
     [SerializeField, ReadOnly]
     Tile child = null;
+    [SerializeField, ReadOnly]
+    TileType tileType = TileType.Invalid;
     [SerializeField]
     float zPosition = 0.0f;
     [SerializeField]
@@ -54,6 +64,17 @@ public class Tile : MonoBehaviour {
     LineRenderer lineRenderer = null;
 
     const float halfSize = 0.51f;
+
+    public bool isStartTile
+    {
+        get { return tileType == TileType.Start; }
+    }
+
+    public Tile parent
+    {
+        get { return _parent; }
+        private set { _parent = value; }
+    }
 
 	// Use this for initialization
 	void Start () {
@@ -177,10 +198,18 @@ public class Tile : MonoBehaviour {
     {
         goalEffect.SetActive(true);
         GetComponent<Renderer>().material = goalTileMaterial;
+        Validator.SetGoalTile(this);
+        tileType = TileType.Goal;
     }
 
     void MakeStartTile()
     {
         GetComponent<Renderer>().material = startTileMaterial;
+        tileType = TileType.Start;
+    }
+
+    void MakeMiddleTile()
+    {
+        tileType = TileType.Middle;
     }
 }
