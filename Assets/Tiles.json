@@ -1,8 +1,8 @@
 {
 	"Tiles": [
 		{
-			"TopKey": "Goal",
-			"BottomKey": "C",
+			"TopKey": "C",
+			"BottomKey": "Goal",
 			"Text": "If kids are good for the community, then it is good to have kids."
 		},
 		{

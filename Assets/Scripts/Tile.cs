@@ -44,6 +44,12 @@ public class Tile : MonoBehaviour {
     Key topKey = Key.Invalid;
     [SerializeField]
     Key bottomKey = Key.Invalid;
+    [SerializeField]
+    GameObject goalEffect = null;
+    [SerializeField]
+    Material startTileMaterial = null;
+    [SerializeField]
+    Material goalTileMaterial = null;
 
     LineRenderer lineRenderer = null;
 
@@ -58,6 +64,26 @@ public class Tile : MonoBehaviour {
     {
         topKey = (Key) Enum.Parse(typeof(Key), topKeyString, true);
         bottomKey = (Key)Enum.Parse(typeof(Key), bottomKeyString, true);
+
+        if (bottomKey == Key.Goal)
+        {
+            MakeGoalTile();
+        }
+
+        if (topKey == Key.Start)
+        {
+            MakeStartTile();
+        }
+
+        if (bottomKey == Key.Start)
+        {
+            Debug.LogError("Bottom key set to Start");
+        }
+
+        if (topKey == Key.Goal)
+        {
+            Debug.LogError("Top key set to Goal");
+        }
 
         Text uiText = GetComponentInChildren<Text>();
         uiText.text = text;
@@ -145,5 +171,16 @@ public class Tile : MonoBehaviour {
         oldParent.child = null;
         parent = null;
         lineRenderer.SetPosition(1, Vector3.zero);
+    }
+
+    void MakeGoalTile()
+    {
+        goalEffect.SetActive(true);
+        GetComponent<Renderer>().material = goalTileMaterial;
+    }
+
+    void MakeStartTile()
+    {
+        GetComponent<Renderer>().material = startTileMaterial;
     }
 }
