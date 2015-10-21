@@ -5,6 +5,14 @@ public class Validator : SingletonBehaviour<Validator>
 {
     [SerializeField, ReadOnly]
     Tile goalTile = null;
+    [SerializeField]
+    GameObject winObject = null;
+    [SerializeField]
+    GameObject failObject = null;
+    [SerializeField]
+    float winWaitTime = 0.0f;
+    [SerializeField]
+    float failWaitTime = 0.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -41,6 +49,7 @@ public class Validator : SingletonBehaviour<Validator>
             if (currentTile.isStartTile)
             {
                 Debug.Log("Valid solution.");
+                ShowWinEffect();
                 return;
             }
 
@@ -58,5 +67,30 @@ public class Validator : SingletonBehaviour<Validator>
         }
 
         Debug.Log("Invalid solution");
+        ShowFailEffect();
+    }
+
+    void ShowWinEffect()
+    {
+        winObject.SetActive(true);
+        StartCoroutine(FinishLevelRoutine());
+    }
+
+    void ShowFailEffect()
+    {
+        failObject.SetActive(true);
+        StartCoroutine(TurnOffFailEffectRoutine());
+    }
+
+    IEnumerator TurnOffFailEffectRoutine()
+    {
+        yield return new WaitForSeconds(failWaitTime);
+        failObject.SetActive(false);
+    }
+
+    IEnumerator FinishLevelRoutine()
+    {
+        yield return new WaitForSeconds(winWaitTime);
+        winObject.SetActive(false);
     }
 }
