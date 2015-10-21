@@ -163,7 +163,7 @@ public class Tile : MonoBehaviour {
             Tile targetTile = downInfo.collider.GetComponent<Tile>();
             if (targetTile)
             {
-                if (targetTile.parent == null)
+                if (targetTile.parent == null && targetTile.topKey != Key.Start && bottomKey != Key.Goal)
                 {
                     //Debug.Log(outInfo.collider.gameObject.name);
                     transform.position = downInfo.transform.position + transform.up * (1.0f * transform.localScale.y + snapMargin);
@@ -181,7 +181,7 @@ public class Tile : MonoBehaviour {
                 Tile targetTile = upInfo.collider.GetComponent<Tile>();
                 if (targetTile)
                 {
-                    if (targetTile.child == null)
+                    if (targetTile.child == null && targetTile.bottomKey != Key.Goal && topKey != Key.Start)
                     {
                         //Debug.Log(outInfo.collider.gameObject.name);
                         transform.position = upInfo.transform.position + -transform.up * (1.0f * transform.localScale.y + snapMargin);
