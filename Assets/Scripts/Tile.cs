@@ -38,7 +38,9 @@ public class Tile : MonoBehaviour {
     [SerializeField,ReadOnly]
     bool isBeingDragged = false;
     [SerializeField, ReadOnly]
-    Tile _parent = null;
+    Tile leftParent = null;
+    [SerializeField, ReadOnly]
+    Tile rightParent = null;
     [SerializeField, ReadOnly]
     Tile child = null;
     [SerializeField, ReadOnly]
@@ -75,10 +77,24 @@ public class Tile : MonoBehaviour {
         get { return tileType == TileType.Start; }
     }
 
-    public Tile parent
+    public bool hasSingleParent
     {
-        get { return _parent; }
-        private set { _parent = value; }
+        get { return topKeys.Count == 1; }
+    }
+
+    public bool hasOpenParentSlot
+    {
+        get
+        {
+            if (hasSingleParent)
+            {
+                return leftParent == null;
+            }
+            else
+            {
+                return leftParent == null || rightParent == null;
+            }
+        }
     }
 
     public List<Key> topKeys
@@ -161,13 +177,11 @@ public class Tile : MonoBehaviour {
 
     void OnMouseDown()
     {
-        if (parent)
-        {
-            DisconnectFromParent(parent);
-        }
+        RemoveAllParents();
+
         if (child)
         {
-            child.DisconnectFromParent(this);
+            child.RemoveAParent(this);
         }
         //Debug.Log("Mouse down");
         isBeingDragged = true;
@@ -191,11 +205,9 @@ public class Tile : MonoBehaviour {
             Tile targetTile = downInfo.collider.GetComponent<Tile>();
             if (targetTile)
             {
-                if (targetTile.parent == null && !targetTile.isStartTile && bottomKey != Key.Goal)
+                if (targetTile.hasOpenParentSlot && !targetTile.isStartTile && bottomKey != Key.Goal)
                 {
-                    //Debug.Log(outInfo.collider.gameObject.name);
-                    transform.position = downInfo.transform.position + transform.up * (1.0f * transform.localScale.y + snapMargin);
-                    targetTile.ConnectToParent(this);
+                    targetTile.ConnectFromAbove(this);
                 }
             }
         }
@@ -211,26 +223,125 @@ public class Tile : MonoBehaviour {
                 {
                     if (targetTile.child == null && targetTile.bottomKey != Key.Goal && !isStartTile)
                     {
-                        //Debug.Log(outInfo.collider.gameObject.name);
-                        transform.position = upInfo.transform.position + -transform.up * (1.0f * transform.localScale.y + snapMargin);
-                        this.ConnectToParent(targetTile);
+                        ConnectFromBelow(targetTile);
                     }
                 }
             }
         }
     }
 
-    void ConnectToParent(Tile newParent)
+    void ConnectFromAbove(Tile newParent)
     {
-        parent = newParent;
-        parent.child = this;
-        lineRenderer.SetPosition(1, new Vector3(0,1f,0.3f));
+        if (hasSingleParent)
+        {
+            if (leftParent != null)
+            {
+                Debug.LogError("left parent not null");
+            }
+
+            Debug.Log("Connecting single parent");
+            leftParent = newParent;
+            leftParent.child = this;
+            newParent.transform.position = transform.position + transform.up * (1.0f * transform.localScale.y + snapMargin);
+        }
+        else
+        {
+            if (leftParent == null)
+            {
+                Debug.Log("Connecting left parent");
+                leftParent = newParent;
+                leftParent.child = this;
+                newParent.transform.position = transform.position + transform.up * (1.0f * transform.localScale.y + snapMargin) + transform.right * (-0.5f * transform.localScale.x);
+            }
+            else if (rightParent == null)
+            {
+                Debug.Log("Connecting right parent");
+                rightParent = newParent;
+                rightParent.child = this;
+                newParent.transform.position = transform.position + transform.up * (1.0f * transform.localScale.y + snapMargin) + transform.right * (0.5f * transform.localScale.x);
+            }
+            else
+            {
+                Debug.LogError("Neither parent null");
+            }
+        }
     }
 
-    void DisconnectFromParent(Tile oldParent)
+    void ConnectFromBelow(Tile newParent)
+    {
+        if (hasSingleParent)
+        {
+            if (leftParent != null)
+            {
+                Debug.LogError("left parent not null");
+            }
+
+            Debug.Log("Connecting single parent");
+            leftParent = newParent;
+            leftParent.child = this;
+            transform.position = newParent.transform.position + transform.up * (-1.0f * transform.localScale.y + -snapMargin);
+        }
+        else
+        {
+            if (leftParent != null || rightParent != null)
+            {
+                Debug.LogError("Both parents not null on two parent tile being dragged");
+            }
+
+
+            Debug.Log("Connecting left parent");
+            leftParent = newParent;
+            leftParent.child = this;
+            transform.position = newParent.transform.position + transform.up * (-1.0f * transform.localScale.y + -snapMargin) + transform.right * (0.5f * transform.localScale.x);
+        }
+    }
+
+    void DisconnectFromParent(Tile oldParent, bool isLeftParent = true)
     {
         oldParent.child = null;
-        parent = null;
+        if (isLeftParent)
+        {
+            leftParent = null;
+        }
+        else
+        {
+            rightParent = null;
+        }
+        lineRenderer.SetPosition(1, Vector3.zero);
+    }
+
+    void RemoveAllParents()
+    {
+        if (leftParent)
+        {
+            leftParent.child = null;
+            leftParent = null;
+        }
+        if (rightParent)
+        {
+            rightParent.child = null;
+            rightParent = null;
+        }
+        lineRenderer.SetPosition(1, Vector3.zero);
+    }
+
+    void RemoveAParent(Tile oldParent)
+    {
+        if (leftParent == oldParent)
+        {
+            leftParent.child = null;
+            leftParent = null;
+        }
+        else if (rightParent == oldParent)
+        {
+            rightParent.child = null;
+            rightParent = null;
+        }
+        else
+        {
+            Debug.LogError("Could not find parent to remove");
+        }
+
         lineRenderer.SetPosition(1, Vector3.zero);
     }
 
