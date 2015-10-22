@@ -61,6 +61,10 @@ public class Tile : MonoBehaviour {
     Material startTileMaterial = null;
     [SerializeField]
     Material goalTileMaterial = null;
+    [SerializeField]
+    GameObject twoTileSupportsEffect = null;
+    [SerializeField]
+    GameObject oneTileSupportEffect = null;
 
     LineRenderer lineRenderer = null;
 
@@ -123,8 +127,27 @@ public class Tile : MonoBehaviour {
             Debug.LogError("Top key set to Goal");
         }
 
+        if (topKeys.Count == 1)
+        {
+            if (!isStartTile)
+            {
+                oneTileSupportEffect.SetActive(true);
+            }
+        }
+        else if (topKeys.Count == 2)
+        {
+            twoTileSupportsEffect.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("Unexpected number of top keys: " + topKeys.Count + " from string: " + topKeyString);
+        }
+
         Text uiText = GetComponentInChildren<Text>();
-        uiText.text = text;
+        if (uiText)
+        {
+            uiText.text = text;
+        }
     }
 
 	// Update is called once per frame
@@ -168,7 +191,7 @@ public class Tile : MonoBehaviour {
             Tile targetTile = downInfo.collider.GetComponent<Tile>();
             if (targetTile)
             {
-                if (targetTile.parent == null && !targetTile.topKeys.Contains(Key.Start) && bottomKey != Key.Goal)
+                if (targetTile.parent == null && !targetTile.isStartTile && bottomKey != Key.Goal)
                 {
                     //Debug.Log(outInfo.collider.gameObject.name);
                     transform.position = downInfo.transform.position + transform.up * (1.0f * transform.localScale.y + snapMargin);
@@ -186,7 +209,7 @@ public class Tile : MonoBehaviour {
                 Tile targetTile = upInfo.collider.GetComponent<Tile>();
                 if (targetTile)
                 {
-                    if (targetTile.child == null && targetTile.bottomKey != Key.Goal && !topKeys.Contains(Key.Start))
+                    if (targetTile.child == null && targetTile.bottomKey != Key.Goal && !isStartTile)
                     {
                         //Debug.Log(outInfo.collider.gameObject.name);
                         transform.position = upInfo.transform.position + -transform.up * (1.0f * transform.localScale.y + snapMargin);
