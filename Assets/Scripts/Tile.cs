@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class Tile : MonoBehaviour {
 
@@ -51,7 +52,7 @@ public class Tile : MonoBehaviour {
     [SerializeField]
     float snapMargin = 0.0f;
     [SerializeField]
-    Key _topKey = Key.Invalid;
+    List<Key> _topKeys = new List<Key>();
     [SerializeField]
     Key _bottomKey = Key.Invalid;
     [SerializeField]
@@ -76,10 +77,10 @@ public class Tile : MonoBehaviour {
         private set { _parent = value; }
     }
 
-    public Key topKey
+    public List<Key> topKeys
     {
-        get { return _topKey; }
-        private set { _topKey = value; }
+        get { return _topKeys; }
+        private set { _topKeys = value; }
     }
 
     public Key bottomKey
@@ -95,7 +96,11 @@ public class Tile : MonoBehaviour {
 
     public void Initialize(string topKeyString, string bottomKeyString, string text)
     {
-        topKey = (Key) Enum.Parse(typeof(Key), topKeyString, true);
+        foreach (string keyString in topKeyString.Split(',') )
+        {
+            topKeys.Add((Key)Enum.Parse(typeof(Key), keyString, true));
+        }
+
         bottomKey = (Key)Enum.Parse(typeof(Key), bottomKeyString, true);
 
         if (bottomKey == Key.Goal)
@@ -103,7 +108,7 @@ public class Tile : MonoBehaviour {
             MakeGoalTile();
         }
 
-        if (topKey == Key.Start)
+        if (topKeys.Count == 1 && topKeys[0] == Key.Start)
         {
             MakeStartTile();
         }
@@ -113,7 +118,7 @@ public class Tile : MonoBehaviour {
             Debug.LogError("Bottom key set to Start");
         }
 
-        if (topKey == Key.Goal)
+        if (topKeys.Contains(Key.Goal))
         {
             Debug.LogError("Top key set to Goal");
         }
@@ -163,7 +168,7 @@ public class Tile : MonoBehaviour {
             Tile targetTile = downInfo.collider.GetComponent<Tile>();
             if (targetTile)
             {
-                if (targetTile.parent == null && targetTile.topKey != Key.Start && bottomKey != Key.Goal)
+                if (targetTile.parent == null && !targetTile.topKeys.Contains(Key.Start) && bottomKey != Key.Goal)
                 {
                     //Debug.Log(outInfo.collider.gameObject.name);
                     transform.position = downInfo.transform.position + transform.up * (1.0f * transform.localScale.y + snapMargin);
@@ -181,7 +186,7 @@ public class Tile : MonoBehaviour {
                 Tile targetTile = upInfo.collider.GetComponent<Tile>();
                 if (targetTile)
                 {
-                    if (targetTile.child == null && targetTile.bottomKey != Key.Goal && topKey != Key.Start)
+                    if (targetTile.child == null && targetTile.bottomKey != Key.Goal && !topKeys.Contains(Key.Start))
                     {
                         //Debug.Log(outInfo.collider.gameObject.name);
                         transform.position = upInfo.transform.position + -transform.up * (1.0f * transform.localScale.y + snapMargin);

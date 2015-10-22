@@ -1,0 +1,19 @@
+{
+	"Tiles": [
+		{
+			"TopKey": "A,B",
+			"BottomKey": "Goal",
+			"Text": "If chocolate tastes the best and is the healthiest, then it is the best flavor."
+		},
+		{
+			"TopKey": "Start",
+			"BottomKey": "A",
+			"Text": "Chocoloate tastes the best."
+		},
+		{
+			"TopKey": "Start",
+			"BottomKey": "B",
+			"Text": "Chocolate is the healthiest."
+		},
+	]
+}

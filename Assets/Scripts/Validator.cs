@@ -36,7 +36,7 @@ public class Validator : SingletonBehaviour<Validator>
 
     public void Validate()
     {
-        if (instance.goalTile == null)
+       /* if (instance.goalTile == null)
         {
             Debug.LogError("Goal tile null");
             return;
@@ -64,7 +64,7 @@ public class Validator : SingletonBehaviour<Validator>
             }
 
             currentTile = currentTile.parent;
-        }
+        }*/
 
         Debug.Log("Invalid solution");
         ShowFailEffect();
