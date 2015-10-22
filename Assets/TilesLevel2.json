@@ -1,7 +1,7 @@
 {
 	"Tiles": [
 		{
-			"TopKey": "A,B",
+			"TopKey": "A,C",
 			"BottomKey": "Goal",
 			"Text": "If chocolate tastes the best and is the healthiest, then it is the best flavor."
 		},
@@ -13,7 +13,12 @@
 		{
 			"TopKey": "Start",
 			"BottomKey": "B",
-			"Text": "Chocolate is the healthiest."
+			"Text": "Chocolate has more antioxidants than other flavors."
+		},
+		{
+			"TopKey": "B",
+			"BottomKey": "C",
+			"Text": "SInce chocolate has the most antioxidants, it is the healthiest."
 		},
 	]
 }

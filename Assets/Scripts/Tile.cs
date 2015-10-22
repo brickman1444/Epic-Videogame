@@ -363,4 +363,35 @@ public class Tile : MonoBehaviour {
     {
         tileType = TileType.Middle;
     }
+
+    public bool IsValid()
+    {
+        if (isStartTile)
+        {
+            return true;
+        }
+
+        if (hasSingleParent)
+        {
+            if (leftParent)
+            {
+                return leftParent.IsValid();
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            if (!leftParent || !rightParent)
+            {
+                return false;
+            }
+            else
+            {
+                return leftParent.IsValid() && rightParent.IsValid();
+            }
+        }
+    }
 }

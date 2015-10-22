@@ -36,38 +36,21 @@ public class Validator : SingletonBehaviour<Validator>
 
     public void Validate()
     {
-       /* if (instance.goalTile == null)
+        if (instance.goalTile == null)
         {
             Debug.LogError("Goal tile null");
             return;
         }
 
-        Tile currentTile = goalTile;
-
-        while (currentTile != null)
+        // recursively validates the tree
+        if (goalTile.IsValid())
         {
-            if (currentTile.isStartTile)
-            {
-                Debug.Log("Valid solution.");
-                ShowWinEffect();
-                return;
-            }
-
-            if (currentTile.parent == null)
-            {
-                break;
-            }
-
-            if (currentTile.topKey != currentTile.parent.bottomKey)
-            {
-                break;
-            }
-
-            currentTile = currentTile.parent;
-        }*/
-
-        Debug.Log("Invalid solution");
-        ShowFailEffect();
+            ShowWinEffect();
+        }
+        else
+        {
+            ShowFailEffect();
+        }
     }
 
     void ShowWinEffect()
