@@ -6,6 +6,8 @@ public class Validator : SingletonBehaviour<Validator>
     [SerializeField, ReadOnly]
     Tile goalTile = null;
     [SerializeField]
+    string nextLevelName = "";
+    [SerializeField]
     GameObject winObject = null;
     [SerializeField]
     GameObject failObject = null;
@@ -75,5 +77,9 @@ public class Validator : SingletonBehaviour<Validator>
     {
         yield return new WaitForSeconds(winWaitTime);
         winObject.SetActive(false);
+        if (nextLevelName.Length != 0)
+        {
+            Application.LoadLevel(nextLevelName);
+        }
     }
 }
