@@ -367,7 +367,7 @@ public class Tile : MonoBehaviour {
         {
             if (leftParent)
             {
-                return leftParent.IsValid();
+                return topKeys[0] == leftParent.bottomKey && leftParent.IsValid();
             }
             else
             {
@@ -382,7 +382,8 @@ public class Tile : MonoBehaviour {
             }
             else
             {
-                return leftParent.IsValid() && rightParent.IsValid();
+                return topKeys.Contains( leftParent.bottomKey ) && leftParent.IsValid()
+                    && topKeys.Contains( rightParent.bottomKey ) && rightParent.IsValid();
             }
         }
     }
