@@ -68,7 +68,7 @@ public class Tile : MonoBehaviour {
     [SerializeField]
     GameObject oneTileSupportEffect = null;
 
-    LineRenderer lineRenderer = null;
+    LineRenderer[] lineRenderers = new LineRenderer[2];
 
     const float halfSize = 0.51f;
 
@@ -111,7 +111,7 @@ public class Tile : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        lineRenderer = GetComponentInChildren<LineRenderer>();
+        lineRenderers = GetComponentsInChildren<LineRenderer>();
 	}
 
     public void Initialize(string topKeyString, string bottomKeyString, string text)
@@ -243,7 +243,7 @@ public class Tile : MonoBehaviour {
             leftParent = newParent;
             leftParent.child = this;
             newParent.transform.position = transform.position + transform.up * (1.0f * transform.localScale.y + snapMargin);
-            lineRenderer.SetPosition(1, transform.up * 1.0f);
+            AttachLeftLine( transform.up * 1.0f);
         }
         else
         {
@@ -253,6 +253,7 @@ public class Tile : MonoBehaviour {
                 leftParent = newParent;
                 leftParent.child = this;
                 newParent.transform.position = transform.position + transform.up * (1.0f * transform.localScale.y + snapMargin) + transform.right * (-0.5f * transform.localScale.x);
+                AttachLeftLine( transform.up * 1.0f + transform.right * -0.5f);
             }
             else if (rightParent == null)
             {
@@ -260,6 +261,7 @@ public class Tile : MonoBehaviour {
                 rightParent = newParent;
                 rightParent.child = this;
                 newParent.transform.position = transform.position + transform.up * (1.0f * transform.localScale.y + snapMargin) + transform.right * (0.5f * transform.localScale.x);
+                AttachRightLine( transform.up * 1.0f + transform.right * 0.5f);
             }
             else
             {
@@ -282,7 +284,7 @@ public class Tile : MonoBehaviour {
             leftParent.child = this;
             Vector3 parentOffset =
             transform.position = newParent.transform.position + transform.up * (-1.0f * transform.localScale.y + -snapMargin);
-            lineRenderer.SetPosition(1, transform.up * 1.0f);
+            AttachLeftLine( transform.up * 1.0f);
         }
         else
         {
@@ -296,21 +298,8 @@ public class Tile : MonoBehaviour {
             leftParent = newParent;
             leftParent.child = this;
             transform.position = newParent.transform.position + transform.up * (-1.0f * transform.localScale.y + -snapMargin) + transform.right * (0.5f * transform.localScale.x);
+            AttachRightLine( transform.up * 1.0f + transform.right * -0.5f);
         }
-    }
-
-    void DisconnectFromParent(Tile oldParent, bool isLeftParent = true)
-    {
-        oldParent.child = null;
-        if (isLeftParent)
-        {
-            leftParent = null;
-        }
-        else
-        {
-            rightParent = null;
-        }
-        lineRenderer.SetPosition(1, Vector3.zero);
     }
 
     void RemoveAllParents()
@@ -325,7 +314,8 @@ public class Tile : MonoBehaviour {
             rightParent.child = null;
             rightParent = null;
         }
-        lineRenderer.SetPosition(1, Vector3.zero);
+
+        DisconnectAllLines();
     }
 
     void RemoveAParent(Tile oldParent)
@@ -334,18 +324,18 @@ public class Tile : MonoBehaviour {
         {
             leftParent.child = null;
             leftParent = null;
+            DisconnectLeftLine();
         }
         else if (rightParent == oldParent)
         {
             rightParent.child = null;
             rightParent = null;
+            DisconnectRightLine();
         }
         else
         {
             Debug.LogError("Could not find parent to remove");
         }
-
-        lineRenderer.SetPosition(1, Vector3.zero);
     }
 
     void MakeGoalTile()
@@ -396,5 +386,31 @@ public class Tile : MonoBehaviour {
                 return leftParent.IsValid() && rightParent.IsValid();
             }
         }
+    }
+
+    void AttachLeftLine(Vector3 parentPos)
+    {
+        lineRenderers[0].SetPosition(1, parentPos);
+    }
+
+    void AttachRightLine(Vector3 parentPos)
+    {
+        lineRenderers[1].SetPosition(1, parentPos);
+    }
+
+    void DisconnectLeftLine()
+    {
+        lineRenderers[0].SetPosition(1, Vector3.zero);
+    }
+
+    void DisconnectRightLine()
+    {
+        lineRenderers[1].SetPosition(1, Vector3.zero);
+    }
+
+    void DisconnectAllLines()
+    {
+        DisconnectLeftLine();
+        DisconnectRightLine();
     }
 }
