@@ -243,6 +243,7 @@ public class Tile : MonoBehaviour {
             leftParent = newParent;
             leftParent.child = this;
             newParent.transform.position = transform.position + transform.up * (1.0f * transform.localScale.y + snapMargin);
+            lineRenderer.SetPosition(1, transform.up * 1.0f);
         }
         else
         {
@@ -279,7 +280,9 @@ public class Tile : MonoBehaviour {
             Debug.Log("Connecting single parent");
             leftParent = newParent;
             leftParent.child = this;
+            Vector3 parentOffset =
             transform.position = newParent.transform.position + transform.up * (-1.0f * transform.localScale.y + -snapMargin);
+            lineRenderer.SetPosition(1, transform.up * 1.0f);
         }
         else
         {
