@@ -302,7 +302,7 @@ public class Tile : MonoBehaviour {
             leftParent = newParent;
             leftParent.child = this;
             transform.position = newParent.transform.position + transform.up * (-1.0f * transform.localScale.y + -snapMargin) + transform.right * (0.5f * transform.localScale.x);
-            AttachRightLine( transform.up * 1.0f + transform.right * -0.5f);
+            AttachLeftLine( transform.up * 1.0f + transform.right * -0.5f);
         }
     }
 
@@ -328,13 +328,20 @@ public class Tile : MonoBehaviour {
         {
             leftParent.child = null;
             leftParent = null;
-            DisconnectLeftLine();
+            if (hasSingleParent)
+            {
+                ResetSingleLine();
+            }
+            else
+            {
+                ResetLeftLine();
+            }
         }
         else if (rightParent == oldParent)
         {
             rightParent.child = null;
             rightParent = null;
-            DisconnectRightLine();
+            ResetRightLine();
         }
         else
         {
@@ -399,14 +406,29 @@ public class Tile : MonoBehaviour {
         {
             if (!isStartTile)
             {
-                AttachLeftLine(transform.up * idleLineVerticalDistance);
+                ResetSingleLine();
             }
         }
         else
         {
-            AttachLeftLine(transform.up * idleLineVerticalDistance + transform.right * -idleLineHorizontalDistance);
-            AttachRightLine(transform.up * idleLineVerticalDistance + transform.right * idleLineHorizontalDistance);
+            ResetLeftLine();
+            ResetRightLine();
         }
+    }
+
+    void ResetSingleLine()
+    {
+        AttachLeftLine(transform.up * idleLineVerticalDistance);
+    }
+
+    void ResetLeftLine()
+    {
+        AttachLeftLine(transform.up * idleLineVerticalDistance + transform.right * -idleLineHorizontalDistance);
+    }
+
+    void ResetRightLine()
+    {
+        AttachRightLine(transform.up * idleLineVerticalDistance + transform.right * idleLineHorizontalDistance);
     }
 
     void AttachLeftLine(Vector3 parentPos)
@@ -417,21 +439,5 @@ public class Tile : MonoBehaviour {
     void AttachRightLine(Vector3 parentPos)
     {
         lineRenderers[1].SetPosition(1, parentPos);
-    }
-
-    void DisconnectLeftLine()
-    {
-        lineRenderers[0].SetPosition(1, Vector3.zero);
-    }
-
-    void DisconnectRightLine()
-    {
-        lineRenderers[1].SetPosition(1, Vector3.zero);
-    }
-
-    void DisconnectAllLines()
-    {
-        DisconnectLeftLine();
-        DisconnectRightLine();
     }
 }
