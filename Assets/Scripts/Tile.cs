@@ -67,6 +67,10 @@ public class Tile : MonoBehaviour {
     GameObject twoTileSupportsEffect = null;
     [SerializeField]
     GameObject oneTileSupportEffect = null;
+    [SerializeField]
+    float idleLineVerticalDistance = 0.0f;
+    [SerializeField]
+    float idleLineHorizontalDistance = 0.0f;
 
     LineRenderer[] lineRenderers = new LineRenderer[2];
 
@@ -112,6 +116,7 @@ public class Tile : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         lineRenderers = GetComponentsInChildren<LineRenderer>();
+        ResetLines();
 	}
 
     public void Initialize(string topKeyString, string bottomKeyString, string text)
@@ -314,7 +319,7 @@ public class Tile : MonoBehaviour {
             rightParent = null;
         }
 
-        DisconnectAllLines();
+        ResetLines();
     }
 
     void RemoveAParent(Tile oldParent)
@@ -385,6 +390,22 @@ public class Tile : MonoBehaviour {
                 return topKeys.Contains( leftParent.bottomKey ) && leftParent.IsValid()
                     && topKeys.Contains( rightParent.bottomKey ) && rightParent.IsValid();
             }
+        }
+    }
+
+    void ResetLines()
+    {
+        if (topKeys.Count == 1)
+        {
+            if (!isStartTile)
+            {
+                AttachLeftLine(transform.up * idleLineVerticalDistance);
+            }
+        }
+        else
+        {
+            AttachLeftLine(transform.up * idleLineVerticalDistance + transform.right * -idleLineHorizontalDistance);
+            AttachRightLine(transform.up * idleLineVerticalDistance + transform.right * idleLineHorizontalDistance);
         }
     }
 
