@@ -71,6 +71,8 @@ public class Tile : MonoBehaviour {
     float idleLineVerticalDistance = 0.0f;
     [SerializeField]
     float idleLineHorizontalDistance = 0.0f;
+    [SerializeField]
+    Vector3 debugLineOffset = Vector3.zero;
 
     LineRenderer[] lineRenderers = new LineRenderer[2];
 
@@ -205,7 +207,7 @@ public class Tile : MonoBehaviour {
         // Try to snap down
         RaycastHit2D downInfo = Physics2D.Raycast(transform.position + -transform.up * halfSize * transform.localScale.y, -transform.up, snapTestDistance);
 
-        LineDrawing.DrawLine(transform.position, transform.position + -transform.up * halfSize * transform.localScale.y, 1.0f);
+        LineDrawing.DrawLine(transform.position + debugLineOffset, transform.position + -transform.up * halfSize * transform.localScale.y + debugLineOffset, 1.0f);
 
         if (downInfo && downInfo.collider && downInfo.collider.gameObject)
         {
@@ -223,7 +225,7 @@ public class Tile : MonoBehaviour {
             // Try to snap up
             RaycastHit2D upInfo = Physics2D.Raycast(transform.position + transform.up * halfSize * transform.localScale.y, transform.up, snapTestDistance);
 
-            LineDrawing.DrawLine(transform.position, transform.position + transform.up * halfSize * transform.localScale.y, 1.0f);
+            LineDrawing.DrawLine(transform.position + debugLineOffset, transform.position + transform.up * halfSize * transform.localScale.y + debugLineOffset, 1.0f);
 
             if (upInfo && upInfo.collider && upInfo.collider.gameObject)
             {
