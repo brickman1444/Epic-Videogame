@@ -1,19 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
  
 [RequireComponent(typeof (Camera))]
-public class GLLineDrawer : MonoBehaviour
+public class GLLineDrawer : SingletonBehaviour<GLLineDrawer>
 {
-	public int numberOfPoints = 2;
-	public Color lineColor = Color.red;
-	public int lineWidth = 3;
-	public bool drawLines = true;
+    [SerializeField]
+	Color lineColor = Color.red;
+    [SerializeField]
+	int lineWidth = 3;
 
 	Material lineMaterial;
-	Vector2[] linePoints = new Vector2[2];
+	List<Vector2> linePoints = new List<Vector2>();
 	Camera cam;
  
-	void Awake()
+	void Start()
 	{
         // Unity has a built-in shader that is useful for drawing
         // simple colored things.
@@ -33,18 +34,18 @@ public class GLLineDrawer : MonoBehaviour
 	// Sets line endpoints to center of screen and mouse position
 	void Update()
 	{
-		linePoints[0] = new Vector2(0.5f, 0.5f);
-		linePoints[1] = new Vector2(Input.mousePosition.x/Screen.width, Input.mousePosition.y/Screen.height);
+        linePoints.Clear();
+        linePoints.Add(new Vector2(0.5f, 0.5f));
+		linePoints.Add(new Vector2(Input.mousePosition.x/Screen.width, Input.mousePosition.y/Screen.height));
 	}
  
 	void OnPostRender()
 	{
-		if (!drawLines || linePoints == null || linePoints.Length < 2)
+		if (linePoints == null || linePoints.Count < 2)
 			return;
  
 		float nearClip = cam.nearClipPlane + 0.00001f;
-		int end = linePoints.Length - 1;
-        float thisWidth = (float)lineWidth / Screen.width *0.5f;
+		int end = linePoints.Count - 1;
  
 		lineMaterial.SetPass(0);
  
@@ -65,6 +66,7 @@ public class GLLineDrawer : MonoBehaviour
             
 	        for (int i = 0; i < end; ++i)
 			{
+                float thisWidth = (float)lineWidth / Screen.width * 0.5f;
 	            Vector3 perpendicular = (new Vector3(linePoints[i+1].y, linePoints[i].x, nearClip) -
 	                                 new Vector3(linePoints[i].y, linePoints[i+1].x, nearClip)).normalized * thisWidth;
 	            Vector3 v1 = new Vector3(linePoints[i].x, linePoints[i].y, nearClip);
