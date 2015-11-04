@@ -9,31 +9,25 @@ public class GLLineDrawer : MonoBehaviour
 	public int lineWidth = 3;
 	public bool drawLines = true;
 
-    [SerializeField]
-    Shader lineShader;
-
-	private Material lineMaterial;
-	private Vector2[] linePoints;
-	private Camera cam;
+	Material lineMaterial;
+	Vector2[] linePoints = new Vector2[2];
+	Camera cam;
  
 	void Awake()
 	{
-        lineMaterial = new Material(lineShader);
-		/*lineMaterial = new Material( "Shader \"Lines/Colored Blended\" {" +
-        "SubShader { Pass {" +
-        "   BindChannels { Bind \"Color\",color }" +
-        "   Blend SrcAlpha OneMinusSrcAlpha" +
-        "   ZWrite Off Cull Off Fog { Mode Off }" +
-        "} } }");*/
-		lineMaterial.hideFlags = HideFlags.HideAndDontSave;
-		lineMaterial.shader.hideFlags = HideFlags.HideAndDontSave;
+        // Unity has a built-in shader that is useful for drawing
+        // simple colored things.
+        Shader shader = Shader.Find("Hidden/Internal-Colored");
+        lineMaterial = new Material(shader);
+        lineMaterial.hideFlags = HideFlags.HideAndDontSave;
+        // Turn on alpha blending
+        lineMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+        lineMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+        // Turn backface culling off
+        lineMaterial.SetInt("_Cull", (int)UnityEngine.Rendering.CullMode.Off);
+        // Turn off depth writes
+        lineMaterial.SetInt("_ZWrite", 0);
 		cam = GetComponent<Camera>();
-	}
- 
-	// Creates a simple two point line
-	void Start()
-	{
-		linePoints = new Vector2[2];
 	}
  
 	// Sets line endpoints to center of screen and mouse position
@@ -50,14 +44,14 @@ public class GLLineDrawer : MonoBehaviour
  
 		float nearClip = cam.nearClipPlane + 0.00001f;
 		int end = linePoints.Length - 1;
-		float thisWidth = 1f/Screen.width * lineWidth * 0.5f;
+        float thisWidth = (float)lineWidth / Screen.width *0.5f;
  
 		lineMaterial.SetPass(0);
-		GL.Color(lineColor);
  
 		if (lineWidth == 1)
 		{
 	        GL.Begin(GL.LINES);
+            GL.Color(lineColor);
 	        for (int i = 0; i < end; ++i)
 			{
 	            GL.Vertex(cam.ViewportToWorldPoint(new Vector3(linePoints[i].x, linePoints[i].y, nearClip)));
@@ -67,6 +61,8 @@ public class GLLineDrawer : MonoBehaviour
     	else
 		{
 	        GL.Begin(GL.QUADS);
+            GL.Color(lineColor);
+            
 	        for (int i = 0; i < end; ++i)
 			{
 	            Vector3 perpendicular = (new Vector3(linePoints[i+1].y, linePoints[i].x, nearClip) -
