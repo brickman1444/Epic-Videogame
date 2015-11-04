@@ -3,14 +3,14 @@ using System.Collections;
 
 public static class LineDrawing
 {
-    public static void DrawLine( Vector3 startPos, Vector3 endPos, float duration )
+    public static void DrawLine( Vector3 startPos, Vector3 endPos, Color color, float duration )
     {
         Debug.DrawLine(startPos, endPos, Color.red, duration);
 
-        GLLineDrawer.instance.DrawLine(startPos, endPos, duration);
+        GLLineDrawer.instance.DrawLine(startPos, endPos, color, duration);
     }
 
-    public static void DrawCollider(Collider2D collider, float duration )
+    public static void DrawCollider(Collider2D collider, Color color, float duration )
     {
         BoxCollider2D boxCollider = (BoxCollider2D)collider;
 
@@ -20,9 +20,9 @@ public static class LineDrawing
         Vector3 upperRight = boxCollider.bounds.max;
         Vector3 lowerRight = lowerLeft + size.SetY(0);
 
-        DrawLine(lowerLeft, upperLeft, duration);
-        DrawLine(upperLeft, upperRight, duration);
-        DrawLine(upperRight, lowerRight, duration);
-        DrawLine(lowerRight, lowerLeft, duration);
+        DrawLine(lowerLeft,  upperLeft,  color, duration);
+        DrawLine(upperLeft,  upperRight, color, duration);
+        DrawLine(upperRight, lowerRight, color, duration);
+        DrawLine(lowerRight, lowerLeft,  color, duration);
     }
 }

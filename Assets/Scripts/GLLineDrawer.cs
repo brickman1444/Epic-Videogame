@@ -9,6 +9,8 @@ public class GLLineDrawer : SingletonBehaviour<GLLineDrawer>
     {
         public Vector2 start;
         public Vector2 end;
+        public Color color;
+        public float killTime;
     }
 
     [SerializeField]
@@ -37,11 +39,18 @@ public class GLLineDrawer : SingletonBehaviour<GLLineDrawer>
 		cam = GetComponent<Camera>();
 	}
 
-    public void DrawLine(Vector3 startPos, Vector3 endPos, float duration)
+    void Update()
+    {
+        lines.RemoveAll(line => line.killTime < Time.time);
+    }
+
+    public void DrawLine(Vector3 startPos, Vector3 endPos, Color color, float duration)
     {
         Line line;
         line.start = cam.WorldToViewportPoint(startPos);
         line.end = cam.WorldToViewportPoint(endPos);
+        line.color = color;
+        line.killTime = Time.time + duration;
         lines.Add(line);
     }
  
