@@ -7,6 +7,6 @@ public static class LineDrawing
     {
         Debug.DrawLine(startPos, endPos, Color.red, duration);
 
-        LineDrawer.instance.DrawLine(startPos, endPos, duration);
+        GLLineDrawer.instance.DrawLine(startPos, endPos, duration);
     }
 }
