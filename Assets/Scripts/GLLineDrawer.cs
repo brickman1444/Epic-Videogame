@@ -14,8 +14,6 @@ public class GLLineDrawer : SingletonBehaviour<GLLineDrawer>
     }
 
     [SerializeField]
-	Color lineColor = Color.red;
-    [SerializeField]
 	int lineWidth = 3;
 
 	Material lineMaterial;
@@ -65,9 +63,9 @@ public class GLLineDrawer : SingletonBehaviour<GLLineDrawer>
         if (lineWidth == 1)
         {
             GL.Begin(GL.LINES);
-            GL.Color(lineColor);
             foreach (Line line in lines)
             {
+                GL.Color(line.color);
                 GL.Vertex(cam.ViewportToWorldPoint(new Vector3(line.start.x, line.start.y, nearClip)));
                 GL.Vertex(cam.ViewportToWorldPoint(new Vector3(line.end.x, line.end.y, nearClip)));
             }
@@ -75,12 +73,12 @@ public class GLLineDrawer : SingletonBehaviour<GLLineDrawer>
         else
         {
             GL.Begin(GL.QUADS);
-            GL.Color(lineColor);
 
             float thisWidth = (float)lineWidth / Screen.width * 0.5f;
 
             foreach (Line line in lines)
             {
+                GL.Color(line.color);
                 Vector3 perpendicular = (new Vector3(line.end.y, line.start.x, nearClip) -
                                         new Vector3(line.start.y, line.end.x, nearClip)).normalized * thisWidth;
                 Vector3 v1 = new Vector3(line.start.x, line.start.y, nearClip);
