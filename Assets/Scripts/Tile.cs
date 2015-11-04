@@ -73,6 +73,8 @@ public class Tile : MonoBehaviour {
     float idleLineHorizontalDistance = 0.0f;
     [SerializeField]
     Vector3 debugLineOffset = Vector3.zero;
+    [SerializeField]
+    float debugLineDuration = 0.0f;
 
     LineRenderer[] lineRenderers = new LineRenderer[2];
 
@@ -207,13 +209,15 @@ public class Tile : MonoBehaviour {
         // Try to snap down
         RaycastHit2D downInfo = Physics2D.Raycast(transform.position + -transform.up * halfSize * transform.localScale.y, -transform.up, snapTestDistance);
 
-        LineDrawing.DrawLine(transform.position + debugLineOffset, transform.position + -transform.up * halfSize * transform.localScale.y + debugLineOffset, 1.0f);
+        LineDrawing.DrawLine(transform.position + debugLineOffset, transform.position + -transform.up * halfSize * transform.localScale.y + debugLineOffset, debugLineDuration);
 
         if (downInfo && downInfo.collider && downInfo.collider.gameObject)
         {
             Tile targetTile = downInfo.collider.GetComponent<Tile>();
             if (targetTile)
             {
+                LineDrawing.DrawCollider(downInfo.collider, debugLineDuration);
+
                 if (targetTile.hasOpenParentSlot && !targetTile.isStartTile && bottomKey != Key.Goal)
                 {
                     targetTile.ConnectFromAbove(this);
@@ -225,13 +229,15 @@ public class Tile : MonoBehaviour {
             // Try to snap up
             RaycastHit2D upInfo = Physics2D.Raycast(transform.position + transform.up * halfSize * transform.localScale.y, transform.up, snapTestDistance);
 
-            LineDrawing.DrawLine(transform.position + debugLineOffset, transform.position + transform.up * halfSize * transform.localScale.y + debugLineOffset, 1.0f);
+            LineDrawing.DrawLine(transform.position + debugLineOffset, transform.position + transform.up * halfSize * transform.localScale.y + debugLineOffset, debugLineDuration);
 
             if (upInfo && upInfo.collider && upInfo.collider.gameObject)
             {
                 Tile targetTile = upInfo.collider.GetComponent<Tile>();
                 if (targetTile)
                 {
+                    LineDrawing.DrawCollider(upInfo.collider, debugLineDuration);
+
                     if (targetTile.child == null && targetTile.bottomKey != Key.Goal && !isStartTile)
                     {
                         ConnectFromBelow(targetTile);
