@@ -53,6 +53,8 @@ public class Tile : MonoBehaviour {
     float snapTestDistance = 0.0f;
     [SerializeField]
     float snapMargin = 0.0f;
+    [SerializeField,Tooltip("Percent of the tiles width that the tile will be offset when put in the snapped position")]
+    float horizontalSnapPercent = 0.0f;
     [SerializeField]
     List<Key> _topKeys = new List<Key>();
     [SerializeField]
@@ -267,16 +269,16 @@ public class Tile : MonoBehaviour {
                 Debug.Log("Connecting left parent");
                 leftParent = newParent;
                 leftParent.child = this;
-                newParent.transform.position = transform.position + transform.up * (1.0f * transform.localScale.y + snapMargin) + transform.right * (-0.5f * transform.localScale.x);
-                AttachLeftLine( transform.up * 1.0f + transform.right * -0.5f);
+                newParent.transform.position = transform.position + transform.up * (1.0f * transform.localScale.y + snapMargin) + transform.right * (-horizontalSnapPercent * transform.localScale.x);
+                AttachLeftLine(transform.up * 1.0f + transform.right * -horizontalSnapPercent);
             }
             else if (rightParent == null)
             {
                 Debug.Log("Connecting right parent");
                 rightParent = newParent;
                 rightParent.child = this;
-                newParent.transform.position = transform.position + transform.up * (1.0f * transform.localScale.y + snapMargin) + transform.right * (0.5f * transform.localScale.x);
-                AttachRightLine( transform.up * 1.0f + transform.right * 0.5f);
+                newParent.transform.position = transform.position + transform.up * (1.0f * transform.localScale.y + snapMargin) + transform.right * (horizontalSnapPercent * transform.localScale.x);
+                AttachRightLine(transform.up * 1.0f + transform.right * horizontalSnapPercent);
             }
             else
             {
@@ -311,8 +313,8 @@ public class Tile : MonoBehaviour {
             Debug.Log("Connecting left parent");
             leftParent = newParent;
             leftParent.child = this;
-            transform.position = newParent.transform.position + transform.up * (-1.0f * transform.localScale.y + -snapMargin) + transform.right * (0.5f * transform.localScale.x);
-            AttachLeftLine( transform.up * 1.0f + transform.right * -0.5f);
+            transform.position = newParent.transform.position + transform.up * (-1.0f * transform.localScale.y + -snapMargin) + transform.right * (horizontalSnapPercent * transform.localScale.x);
+            AttachLeftLine(transform.up * 1.0f + transform.right * -horizontalSnapPercent);
         }
     }
 
