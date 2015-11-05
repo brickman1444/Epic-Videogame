@@ -58,15 +58,9 @@ public class Tile : MonoBehaviour {
     [SerializeField]
     Key _bottomKey = Key.Invalid;
     [SerializeField]
-    GameObject goalEffect = null;
-    [SerializeField]
     Material startTileMaterial = null;
     [SerializeField]
     Material goalTileMaterial = null;
-    [SerializeField]
-    GameObject twoTileSupportsEffect = null;
-    [SerializeField]
-    GameObject oneTileSupportEffect = null;
     [SerializeField]
     float idleLineVerticalDistance = 0.0f;
     [SerializeField]
@@ -160,12 +154,12 @@ public class Tile : MonoBehaviour {
         {
             if (!isStartTile)
             {
-                oneTileSupportEffect.SetActive(true);
+                //oneTileSupportEffect.SetActive(true);
             }
         }
         else if (topKeys.Count == 2)
         {
-            twoTileSupportsEffect.SetActive(true);
+            //twoTileSupportsEffect.SetActive(true);
         }
         else
         {
@@ -367,7 +361,7 @@ public class Tile : MonoBehaviour {
 
     void MakeGoalTile()
     {
-        goalEffect.SetActive(true);
+        //goalEffect.SetActive(true);
         GetComponent<Renderer>().material = goalTileMaterial;
         Validator.SetGoalTile(this);
         tileType = TileType.Goal;
