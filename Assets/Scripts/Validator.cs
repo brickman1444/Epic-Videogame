@@ -77,9 +77,12 @@ public class Validator : SingletonBehaviour<Validator>
     {
         yield return new WaitForSeconds(winWaitTime);
         winObject.SetActive(false);
-        if (nextLevelName.Length != 0)
-        {
-            Application.LoadLevel(nextLevelName);
-        }
+
+        ThoughtBubbleSpawner.instance.Spawn();
+
+        //if (nextLevelName.Length != 0)
+        //{
+        //    Application.LoadLevel(nextLevelName);
+        //}
     }
 }
