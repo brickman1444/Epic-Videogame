@@ -1,0 +1,64 @@
+{
+	"Tiles": [
+		{
+			"TopKey": "A",
+			"BottomKey": "C",
+			"Text": "Bigfoot looks crazy and hard to believe because it leaves behind tracks."
+		},
+		{
+			"TopKey": "G",
+			"BottomKey": "D",
+			"Text": "Since there is evidence of Bigfoot, people must have taken blurry photos of Bigfoot."
+		},
+		{
+			"TopKey": "C",
+			"BottomKey": "F",
+			"Text": "Bigfoot tracks looks nowhere near as crazy as sharks."
+		},
+		{
+			"TopKey": "Start",
+			"BottomKey": "D",
+			"Text": "There are some blurry photos of Bigfoot."
+		},
+		{
+			"TopKey": "Start",
+			"BottomKey": "F",
+			"Text": "Sharks look really crazy and hard to believe."
+		},
+		{
+			"TopKey": "D",
+			"BottomKey": "A",
+			"Text": "Blurry photos are hard to make out, so Bigfoot looks crazy and hard to believe."
+		},
+		{
+			"TopKey": "D",
+			"BottomKey": "E",
+			"Text": "All photos of Bigfoot are blurry, so Bigfoot must be blurry."
+		},
+		{
+			"TopKey": "B,G",
+			"BottomKey": "Goal",
+			"Text": "It isn't crazy for Bigfoot to exist and there is evidence, therefore, Bigfoot exists."
+		},
+		{
+			"TopKey": "A,F",
+			"BottomKey": "B",
+			"Text": "If sharks look crazy but they exist, then Bigfoot isn't too crazy to exist."
+		},
+		{
+			"TopKey": "C",
+			"BottomKey": "G",
+			"Text": "If there are Bigfoot tracks, then there is evidence of Bigfoot."
+		},
+		{
+			"TopKey": "Start",
+			"BottomKey": "A",
+			"Text": "Bigfoot looks crazy and hard to believe."
+		},
+		{
+			"TopKey": "Start",
+			"BottomKey": "C",
+			"Text": "I saw Bigfoot tracks one time."
+		},
+	]
+}

@@ -1,0 +1,49 @@
+{
+	"Tiles": [
+		{
+			"TopKey": "A,B",
+			"BottomKey": "Goal",
+			"Text": "If it is ethically and environmentally wrong to eat meat, you shouldn't eat meat."
+		},
+		{
+			"TopKey": "Start",
+			"BottomKey": "C",
+			"Text": "Meat producers cause unnecessary pain for animals."
+		},
+		{
+			"TopKey": "C",
+			"BottomKey": "A",
+			"Text": "If an action puts animals in unnecessary pain, then it is unethical."
+		},
+		{
+			"TopKey": "Start",
+			"BottomKey": "D",
+			"Text": "It takes a lot of food to raise an animal."
+		},
+		{
+			"TopKey": "Start",
+			"BottomKey": "E",
+			"Text": "Wasting resources is bad for the environment."
+		},
+		{
+			"TopKey": "Start",
+			"BottomKey": "F",
+			"Text": "Raising an animal for meat provides a relatively small amount of food."
+		},
+		{
+			"TopKey": "D,F",
+			"BottomKey": "G",
+			"Text": "Because raising animals takes more food than it provides, raising animals for meat wastes resources."
+		},
+		{
+			"TopKey": "G,E",
+			"BottomKey": "B",
+			"Text": "Because raising animals for meat wastes resources and wasting resources is bad for the environment, eating meat is wrong environmentally."
+		},
+		{
+			"TopKey": "Start",
+			"BottomKey": "H",
+			"Text": "Animals are cute."
+		},
+	]
+}

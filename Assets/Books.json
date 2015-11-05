@@ -1,0 +1,19 @@
+{
+	"Tiles": [
+		{
+			"TopKey": "A",
+			"BottomKey": "Goal",
+			"Text": "If books make you smarter, then books are good."
+		},
+		{
+			"TopKey": "B",
+			"BottomKey": "A",
+			"Text": "If books give you information, then books make you smarter."
+		},
+		{
+			"TopKey": "Start",
+			"BottomKey": "B",
+			"Text": "Books give you information."
+		},
+	]
+}

@@ -1,0 +1,39 @@
+{
+	"Tiles": [
+		{
+			"TopKey": "A,C",
+			"BottomKey": "Goal",
+			"Text": "If chocolate tastes the best and is the healthiest, then it is the best flavor."
+		},
+		{
+			"TopKey": "Start",
+			"BottomKey": "A",
+			"Text": "Chocoloate tastes better than any other flavor."
+		},
+		{
+			"TopKey": "Start",
+			"BottomKey": "B",
+			"Text": "Chocolate has more antioxidants than other flavors."
+		},
+		{
+			"TopKey": "B",
+			"BottomKey": "C",
+			"Text": "SInce chocolate has the most antioxidants, it is the healthiest."
+		},
+		{
+			"TopKey": "Start",
+			"BottomKey": "D",
+			"Text": "Eating Chocolate makes people live longer."
+		},
+		{
+			"TopKey": "D",
+			"BottomKey": "C",
+			"Text": "If people live longer by eating chocolate, then it's the healthiest flavor."
+		},
+		{
+			"TopKey": "F",
+			"BottomKey": "C",
+			"Text": "Since it is the most popular flavor, chocolate has to be the healthiest."
+		},
+	]
+}
