@@ -64,6 +64,10 @@ public class Tile : MonoBehaviour {
     [SerializeField]
     Material goalTileMaterial = null;
     [SerializeField]
+    float startTileTextHeight = 0.0f;
+    [SerializeField]
+    float startTileTextWidth = 0.0f;
+    [SerializeField]
     float idleLineVerticalDistance = 0.0f;
     [SerializeField]
     float idleLineHorizontalDistance = 0.0f;
@@ -393,6 +397,9 @@ public class Tile : MonoBehaviour {
 
     void MakeStartTile()
     {
+        Text text = GetComponentInChildren<Text>();
+        text.rectTransform.sizeDelta = new Vector2(startTileTextWidth, startTileTextHeight);
+
         GetComponent<Renderer>().material = startTileMaterial;
         tileType = TileType.Start;
     }
