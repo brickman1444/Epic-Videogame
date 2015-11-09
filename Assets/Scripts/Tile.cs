@@ -68,13 +68,13 @@ public class Tile : MonoBehaviour {
     [SerializeField]
     float idleLineHorizontalDistance = 0.0f;
     [SerializeField]
-    Vector3 debugLineOffset = Vector3.zero;
-    [SerializeField]
     float debugLineDuration = 0.0f;
     [SerializeField]
     Color raycastLineColor = Color.white;
     [SerializeField]
     Color colliderLineColor = Color.white;
+    [SerializeField]
+    Color connectingLineColor = Color.white;
 
     LineRenderer[] lineRenderers = new LineRenderer[2];
 
@@ -229,8 +229,8 @@ public class Tile : MonoBehaviour {
                     Tile targetTile = downInfo.collider.GetComponent<Tile>();
                     if (targetTile && targetTile.hasOpenParentSlot && !targetTile.isStartTile && bottomKey != Key.Goal)
                     {
-                        LineDrawing.DrawCollider(downInfo.collider, colliderLineColor, debugLineDuration);
                         targetTile.ConnectFromAbove(this);
+                        DrawConnectingEffects(downInfo.collider.gameObject);
                         return;
                     }
                 }
@@ -254,13 +254,19 @@ public class Tile : MonoBehaviour {
                     Tile targetTile = upInfo.collider.GetComponent<Tile>();
                     if (targetTile && targetTile.child == null && targetTile.bottomKey != Key.Goal && !isStartTile)
                     {
-                        LineDrawing.DrawCollider(upInfo.collider, colliderLineColor, debugLineDuration);
                         ConnectFromBelow(targetTile);
+                        DrawConnectingEffects(upInfo.collider.gameObject);
                         return;
                     }
                 }
             }
         }
+    }
+
+    void DrawConnectingEffects(GameObject targetObject)
+    {
+        LineDrawing.DrawCollider(targetObject.GetComponent<Collider2D>(), colliderLineColor, debugLineDuration);
+        LineDrawing.DrawLine(transform.position, targetObject.transform.position, connectingLineColor, debugLineDuration);
     }
 
     void ConnectFromAbove(Tile newParent)
