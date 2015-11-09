@@ -14,6 +14,20 @@ public class Validator : SingletonBehaviour<Validator>
     [SerializeField]
     float failWaitTime = 0.0f;
 
+    [ReadOnly]
+    State state = State.Idle;
+
+    Coroutine coroutine = null;
+
+    enum State
+    {
+        None = 0,
+        Idle,
+        Success,
+        Fail,
+        Dissent,
+    }
+
 	// Use this for initialization
 	void Start () {
 	
@@ -42,6 +56,11 @@ public class Validator : SingletonBehaviour<Validator>
             return;
         }
 
+        if (state == State.Dissent)
+        {
+            return;
+        }
+
         // recursively validates the tree
         if (goalTile.IsValid())
         {
@@ -55,26 +74,60 @@ public class Validator : SingletonBehaviour<Validator>
 
     void ShowWinEffect()
     {
+        switch (state)
+        {
+            case State.Idle: break;
+            case State.Success: return; break;
+            case State.Fail: CleanUpFailEffect(); break;
+            default: Debug.LogError("Unexpected state"); break;
+        }
+
+        state = State.Success;
         winObject.SetActive(true);
-        StartCoroutine(FinishLevelRoutine());
+        coroutine = StartCoroutine(FinishLevelRoutine());
     }
 
     void ShowFailEffect()
     {
+        switch (state)
+        {
+            case State.Idle: break;
+            case State.Success: return; break;
+            case State.Fail: return; break;
+            default: Debug.LogError("Unexpected state"); break;
+        }
+
+        state = State.Fail;
         failObject.SetActive(true);
-        StartCoroutine(TurnOffFailEffectRoutine());
+        coroutine = StartCoroutine(TurnOffFailEffectRoutine());
+    }
+
+    void CleanUpWinEffect()
+    {
+        StopCoroutine(coroutine);
+        coroutine = null;
+        winObject.SetActive(false);
+    }
+
+    void CleanUpFailEffect()
+    {
+        StopCoroutine(coroutine);
+        coroutine = null;
+        failObject.SetActive(false);
     }
 
     IEnumerator TurnOffFailEffectRoutine()
     {
         yield return new WaitForSeconds(failWaitTime);
         failObject.SetActive(false);
+        state = State.Idle;
     }
 
     IEnumerator FinishLevelRoutine()
     {
         yield return new WaitForSeconds(winWaitTime);
         winObject.SetActive(false);
+        state = State.Dissent;
 
         ThoughtBubbleSpawner.instance.Spawn();
     }
