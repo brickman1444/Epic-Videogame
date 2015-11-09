@@ -79,10 +79,16 @@ public class Tile : MonoBehaviour {
     LineRenderer[] lineRenderers = new LineRenderer[2];
 
     const float halfSize = 0.51f;
+    const float quarterSize = 0.26f;
 
     public bool isStartTile
     {
         get { return tileType == TileType.Start; }
+    }
+
+    public bool isGoalTile
+    {
+        get { return tileType == TileType.Goal; }
     }
 
     public bool hasSingleParent
@@ -206,37 +212,51 @@ public class Tile : MonoBehaviour {
 
     void TryToSnap()
     {
-        // Try to snap down
-        RaycastHit2D downInfo = Raycast(transform.position + -transform.up * halfSize * transform.localScale.y, -transform.up, snapTestDistance);
-
-        if (downInfo && downInfo.collider && downInfo.collider.gameObject)
+        if (!isGoalTile)
         {
-            Tile targetTile = downInfo.collider.GetComponent<Tile>();
-            if (targetTile)
-            {
-                LineDrawing.DrawCollider(downInfo.collider, colliderLineColor, debugLineDuration);
+            List<Vector3> downOrigins = new List<Vector3>();
+            downOrigins.Add(transform.position + -transform.up * halfSize * transform.localScale.y + -transform.right * quarterSize * transform.localScale.x);
+            downOrigins.Add(transform.position + -transform.up * halfSize * transform.localScale.y);
+            downOrigins.Add(transform.position + -transform.up * halfSize * transform.localScale.y + transform.right * quarterSize * transform.localScale.x);
 
-                if (targetTile.hasOpenParentSlot && !targetTile.isStartTile && bottomKey != Key.Goal)
+            foreach (Vector3 downOrigin in downOrigins)
+            {
+                // Try to snap down
+                RaycastHit2D downInfo = Raycast(downOrigin, -transform.up, snapTestDistance);
+
+                if (downInfo && downInfo.collider && downInfo.collider.gameObject)
                 {
-                    targetTile.ConnectFromAbove(this);
+                    Tile targetTile = downInfo.collider.GetComponent<Tile>();
+                    if (targetTile && targetTile.hasOpenParentSlot && !targetTile.isStartTile && bottomKey != Key.Goal)
+                    {
+                        LineDrawing.DrawCollider(downInfo.collider, colliderLineColor, debugLineDuration);
+                        targetTile.ConnectFromAbove(this);
+                        return;
+                    }
                 }
             }
         }
-        else
+
+        if (!isStartTile)
         {
-            // Try to snap up
-            RaycastHit2D upInfo = Raycast(transform.position + transform.up * halfSize * transform.localScale.y, transform.up, snapTestDistance);
+            List<Vector3> upOrigins = new List<Vector3>();
+            upOrigins.Add(transform.position + transform.up * halfSize * transform.localScale.y + -transform.right * quarterSize * transform.localScale.x);
+            upOrigins.Add(transform.position + transform.up * halfSize * transform.localScale.y);
+            upOrigins.Add(transform.position + transform.up * halfSize * transform.localScale.y + transform.right * quarterSize * transform.localScale.x);
 
-            if (upInfo && upInfo.collider && upInfo.collider.gameObject)
+            foreach (Vector3 upOrigin in upOrigins)
             {
-                Tile targetTile = upInfo.collider.GetComponent<Tile>();
-                if (targetTile)
-                {
-                    LineDrawing.DrawCollider(upInfo.collider, colliderLineColor, debugLineDuration);
+                // Try to snap up
+                RaycastHit2D upInfo = Raycast(upOrigin, transform.up, snapTestDistance);
 
-                    if (targetTile.child == null && targetTile.bottomKey != Key.Goal && !isStartTile)
+                if (upInfo && upInfo.collider && upInfo.collider.gameObject)
+                {
+                    Tile targetTile = upInfo.collider.GetComponent<Tile>();
+                    if (targetTile && targetTile.child == null && targetTile.bottomKey != Key.Goal && !isStartTile)
                     {
+                        LineDrawing.DrawCollider(upInfo.collider, colliderLineColor, debugLineDuration);
                         ConnectFromBelow(targetTile);
+                        return;
                     }
                 }
             }
