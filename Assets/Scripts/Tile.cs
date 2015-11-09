@@ -207,9 +207,7 @@ public class Tile : MonoBehaviour {
     void TryToSnap()
     {
         // Try to snap down
-        RaycastHit2D downInfo = Physics2D.Raycast(transform.position + -transform.up * halfSize * transform.localScale.y, -transform.up, snapTestDistance);
-
-        LineDrawing.DrawLine(transform.position + debugLineOffset, transform.position + -transform.up * halfSize * transform.localScale.y + debugLineOffset, raycastLineColor, debugLineDuration);
+        RaycastHit2D downInfo = Raycast(transform.position + -transform.up * halfSize * transform.localScale.y, -transform.up, snapTestDistance);
 
         if (downInfo && downInfo.collider && downInfo.collider.gameObject)
         {
@@ -227,9 +225,7 @@ public class Tile : MonoBehaviour {
         else
         {
             // Try to snap up
-            RaycastHit2D upInfo = Physics2D.Raycast(transform.position + transform.up * halfSize * transform.localScale.y, transform.up, snapTestDistance);
-
-            LineDrawing.DrawLine(transform.position + debugLineOffset, transform.position + transform.up * halfSize * transform.localScale.y + debugLineOffset, raycastLineColor, debugLineDuration);
+            RaycastHit2D upInfo = Raycast(transform.position + transform.up * halfSize * transform.localScale.y, transform.up, snapTestDistance);
 
             if (upInfo && upInfo.collider && upInfo.collider.gameObject)
             {
@@ -451,5 +447,14 @@ public class Tile : MonoBehaviour {
     void AttachRightLine(Vector3 parentPos)
     {
         lineRenderers[1].SetPosition(1, parentPos);
+    }
+
+    RaycastHit2D Raycast( Vector3 origin, Vector3 direction, float distance )
+    {
+        RaycastHit2D upInfo = Physics2D.Raycast(origin, direction, distance);
+
+        LineDrawing.DrawLine(origin, origin + direction * distance, raycastLineColor, debugLineDuration);
+
+        return upInfo;
     }
 }
