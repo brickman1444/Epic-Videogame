@@ -1,9 +1,9 @@
 {
 	"Tiles": [
 		{
-			"TopKey": "G,I",
+			"TopKey": "F,I",
 			"BottomKey": "Goal",
-			"Text": "Since power is concentrated in a few executives and the companies are lying to us, the executives are abusing their power to make money."
+			"Text": "A few powerful executives are making doctors lie to us in order to make money off of medicine."
 		},
 		{
 			"TopKey": "Start",
@@ -21,24 +21,9 @@
 			"Text": "Doctors say that medicine is the only way to cure illness."
 		},
 		{
-			"TopKey": "Start",
-			"BottomKey": "D",
-			"Text": "Pharmaceutical companies control the medical education system."
-		},
-		{
-			"TopKey": "D",
-			"BottomKey": "E",
-			"Text": "Since companies control the education system, they control the doctors."
-		},
-		{
 			"TopKey": "C,B",
 			"BottomKey": "F",
 			"Text": "Since doctors say that medicine works and natural remedies don't, doctors are lying."
-		},
-		{
-			"TopKey": "F,E",
-			"BottomKey": "G",
-			"Text": "If doctors are lying and pharmaceutical companies control the doctors, then the companies are lying to us."
 		},
 		{
 			"TopKey": "Start",
@@ -49,6 +34,21 @@
 			"TopKey": "H",
 			"BottomKey": "I",
 			"Text": "Since a few companies dominate the market, power is concentrated in a few executives."
+		},
+		{
+			"TopKey": "Start",
+			"BottomKey": "D",
+			"Text": "There is no evidence of the malevolence of pharmaceutical executives."
+		},
+		{
+			"TopKey": "D",
+			"BottomKey": "E",
+			"Text": "If there is no evidence of the malevolence of executives, that just means that there's a huge coverup."
+		},
+		{
+			"TopKey": "E",
+			"BottomKey": "I",
+			"Text": "Since there is huge coverup, then that proves the power of a few executives."
 		},
 	]
 }
