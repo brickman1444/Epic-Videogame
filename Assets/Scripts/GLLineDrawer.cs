@@ -15,6 +15,8 @@ public class GLLineDrawer : SingletonBehaviour<GLLineDrawer>
 
     [SerializeField]
 	int lineWidth = 3;
+    [SerializeField]
+    float XWidth = 0.0f;
 
 	Material lineMaterial;
 	List<Line> lines = new List<Line>();
@@ -51,7 +53,13 @@ public class GLLineDrawer : SingletonBehaviour<GLLineDrawer>
         line.killTime = Time.time + duration;
         lines.Add(line);
     }
- 
+
+    public void DrawX(Vector3 position, Color color, float duration)
+    {
+        DrawLine(position + -Vector3.up * XWidth * 0.5f + -Vector3.right * XWidth * 0.5f, position + Vector3.up * XWidth * 0.5f + Vector3.right * XWidth * 0.5f, color, duration); // /
+        DrawLine(position + -Vector3.up * XWidth * 0.5f + Vector3.right * XWidth * 0.5f, position + Vector3.up * XWidth * 0.5f + -Vector3.right * XWidth * 0.5f, color, duration);// \
+    }
+
 	void OnPostRender()
 	{
 		if (lines == null || lines.Count < 2)

@@ -25,4 +25,9 @@ public static class LineDrawing
         DrawLine(upperRight, lowerRight, color, duration);
         DrawLine(lowerRight, lowerLeft,  color, duration);
     }
+
+    public static void DrawX(Vector3 position, Color color, float duration)
+    {
+        GLLineDrawer.instance.DrawX(position, color, duration);
+    }
 }

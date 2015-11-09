@@ -79,6 +79,8 @@ public class Tile : MonoBehaviour {
     Color colliderLineColor = Color.white;
     [SerializeField]
     Color connectingLineColor = Color.white;
+    [SerializeField]
+    Color collisionPointColor = Color.white;
 
     LineRenderer[] lineRenderers = new LineRenderer[2];
 
@@ -234,7 +236,7 @@ public class Tile : MonoBehaviour {
                     if (targetTile && targetTile.hasOpenParentSlot && !targetTile.isStartTile && bottomKey != Key.Goal)
                     {
                         targetTile.ConnectFromAbove(this);
-                        DrawConnectingEffects(downInfo.collider.gameObject);
+                        DrawConnectingEffects(downInfo);
                         return;
                     }
                 }
@@ -259,7 +261,7 @@ public class Tile : MonoBehaviour {
                     if (targetTile && targetTile.child == null && targetTile.bottomKey != Key.Goal && !isStartTile)
                     {
                         ConnectFromBelow(targetTile);
-                        DrawConnectingEffects(upInfo.collider.gameObject);
+                        DrawConnectingEffects(upInfo);
                         return;
                     }
                 }
@@ -267,8 +269,11 @@ public class Tile : MonoBehaviour {
         }
     }
 
-    void DrawConnectingEffects(GameObject targetObject)
+    void DrawConnectingEffects(RaycastHit2D hitInfo)
     {
+        LineDrawing.DrawX(hitInfo.point, collisionPointColor, debugLineDuration);
+
+        GameObject targetObject = hitInfo.collider.gameObject;
         LineDrawing.DrawCollider(targetObject.GetComponent<Collider2D>(), colliderLineColor, debugLineDuration);
         LineDrawing.DrawLine(transform.position, targetObject.transform.position, connectingLineColor, debugLineDuration);
     }
