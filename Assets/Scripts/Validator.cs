@@ -84,6 +84,7 @@ public class Validator : SingletonBehaviour<Validator>
 
         state = State.Success;
         winObject.SetActive(true);
+        TileSpawner.instance.DisableAllTiles();
         coroutine = StartCoroutine(FinishLevelRoutine());
     }
 
@@ -129,7 +130,6 @@ public class Validator : SingletonBehaviour<Validator>
         winObject.SetActive(false);
         state = State.Dissent;
 
-        TileSpawner.instance.DisableAllTiles();
         ThoughtBubbleSpawner.instance.Spawn();
     }
 }
