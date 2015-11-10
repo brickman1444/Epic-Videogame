@@ -11,23 +11,71 @@ public class ThoughtBubbleSpawner : SingletonBehaviour<ThoughtBubbleSpawner> {
     [SerializeField]
     string nextLevelName = "";
 
+    [ReadOnly,SerializeField]
+    List<ThoughtBubble> bubbles = new List<ThoughtBubble>();
+
+    [ReadOnly,SerializeField]
+    int currentNoIndex = -1;
+
+    [ReadOnly, SerializeField]
+    int numNosSquashed = 0;
+
+    [SerializeField]
+    int numNosToSquash = 0;
+
     public void Spawn()
     {
         List<Transform> transforms = new List<Transform>(positionParent.GetComponentsInChildren<Transform>());
         transforms.Remove(positionParent.GetComponent<Transform>());
 
-        List<ThoughtBubble> thoughtBubbles = new List<ThoughtBubble>();
-
         foreach (Transform transform in transforms)
         {
             GameObject thoughtBubbleObject = GameObject.Instantiate<GameObject>(thoughtBubblePrefab);
             thoughtBubbleObject.GetComponent<Transform>().position = transform.position;
-            thoughtBubbles.Add(thoughtBubbleObject.GetComponentInChildren<ThoughtBubble>());
+            bubbles.Add(thoughtBubbleObject.GetComponentInChildren<ThoughtBubble>());
         }
 
-        int index = Random.Range(0, thoughtBubbles.Count);
+        MakeNewNo();
+    }
 
-        thoughtBubbles[index].MakeNo();
+    void MakeNewNo()
+    {
+        if (currentNoIndex != -1)
+        {
+            bubbles[currentNoIndex].MakeYes();
+        }
+
+        currentNoIndex = NewNoIndex();
+
+        bubbles[currentNoIndex].MakeNo();
+    }
+
+    int NewNoIndex()
+    {
+        int index = Random.Range(0, bubbles.Count);
+
+        if (index == currentNoIndex)
+        {
+            return NewNoIndex();
+        }
+        else
+        {
+            return index;
+        }
+    }
+
+    public void OnBubbleClicked()
+    {
+        numNosSquashed++;
+
+        if (numNosSquashed >= numNosToSquash)
+        {
+            LoadNextLevel();
+        }
+        else
+        {
+            MakeNewNo();
+        }
     }
 
     public void LoadNextLevel()

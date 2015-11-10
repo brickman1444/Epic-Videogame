@@ -18,11 +18,19 @@ public class ThoughtBubble : MonoBehaviour {
         noEffect.SetActive(true);
     }
 
+    public void MakeYes()
+    {
+        isNo = false;
+        yesEffect.SetActive(true);
+        noEffect.SetActive(false);
+    }
+
     void OnMouseDown()
     {
         if (isNo)
         {
-            ThoughtBubbleSpawner.instance.LoadNextLevel();
+            ThoughtBubbleSpawner.instance.OnBubbleClicked();
+            MakeYes();
         }
     }
 }
