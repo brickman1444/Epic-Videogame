@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class TileSpawner : MonoBehaviour {
+public class TileSpawner : SingletonBehaviour<TileSpawner> {
 
     [SerializeField]
     TextAsset jsonInput = null;
@@ -11,6 +12,9 @@ public class TileSpawner : MonoBehaviour {
     Transform maxSpawn = null;
     [SerializeField]
     Transform minSpawn = null;
+
+    [ReadOnly]
+    List<GameObject> tileObjects = new List<GameObject>();
 
     void Start()
     {
@@ -26,6 +30,7 @@ public class TileSpawner : MonoBehaviour {
             string bottomKey = tileJSON["BottomKey"].str;
             string text = tileJSON["Text"].str;
             tileComponent.Initialize(topKey, bottomKey, text);
+            tileObjects.Add(tileObject);
         }
     }
 
@@ -35,6 +40,13 @@ public class TileSpawner : MonoBehaviour {
         float y = Random.Range(minSpawn.position.y, maxSpawn.position.y);
 
         return new Vector3(x, y, 0);
-        
+    }
+
+    public void DisableAllTiles()
+    {
+        foreach (GameObject go in tileObjects)
+        {
+            go.SetActive(false);
+        }
     }
 }
