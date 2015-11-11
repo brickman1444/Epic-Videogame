@@ -361,13 +361,33 @@ public class Tile : MonoBehaviour {
                 Debug.LogError("Both parents not null on two parent tile being dragged");
             }
 
-
-            Debug.Log("Connecting left parent");
-            leftParent = newParent;
-            leftParent.child = this;
-            transform.position = newParent.transform.position + transform.up * (-1.0f * transform.localScale.y + -snapMargin) + transform.right * (horizontalSnapPercent * transform.localScale.x);
-            AttachLeftLine(transform.up * 1.0f + transform.right * -horizontalSnapPercent);
+            if (newParent.transform.position.x < transform.position.x)
+            {
+                ConnectLeftFromBelow(newParent);
+            }
+            else
+            {
+                ConnectRightFromBelow(newParent);
+            }
         }
+    }
+
+    void ConnectLeftFromBelow(Tile newParent)
+    {
+        Debug.Log("Connecting left parent");
+        leftParent = newParent;
+        leftParent.child = this;
+        transform.position = newParent.transform.position + transform.up * (-1.0f * transform.localScale.y + -snapMargin) + transform.right * (horizontalSnapPercent * transform.localScale.x);
+        AttachLeftLine(transform.up * 1.0f + transform.right * -horizontalSnapPercent);
+    }
+
+    void ConnectRightFromBelow(Tile newParent)
+    {
+        Debug.Log("Connecting right parent");
+        rightParent = newParent;
+        rightParent.child = this;
+        transform.position = newParent.transform.position + transform.up * (-1.0f * transform.localScale.y + -snapMargin) + -transform.right * (horizontalSnapPercent * transform.localScale.x);
+        AttachRightLine(transform.up * 1.0f + transform.right * horizontalSnapPercent);
     }
 
     void RemoveAllParents()
