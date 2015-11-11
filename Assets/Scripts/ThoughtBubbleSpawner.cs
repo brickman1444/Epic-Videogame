@@ -42,7 +42,7 @@ public class ThoughtBubbleSpawner : SingletonBehaviour<ThoughtBubbleSpawner> {
         }
     }
 
-    void MakeNewNo()
+    protected void MakeNewNo()
     {
         if (currentNoIndex != -1)
         {
