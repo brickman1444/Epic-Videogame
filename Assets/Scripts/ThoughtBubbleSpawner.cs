@@ -23,7 +23,13 @@ public class ThoughtBubbleSpawner : SingletonBehaviour<ThoughtBubbleSpawner> {
     [SerializeField]
     int numNosToSquash = 0;
 
-    public void Spawn()
+    public virtual void Spawn()
+    {
+        PlaceYesBubbles();
+        MakeNewNo();
+    }
+
+    protected void PlaceYesBubbles()
     {
         List<Transform> transforms = new List<Transform>(positionParent.GetComponentsInChildren<Transform>());
         transforms.Remove(positionParent.GetComponent<Transform>());
@@ -34,8 +40,6 @@ public class ThoughtBubbleSpawner : SingletonBehaviour<ThoughtBubbleSpawner> {
             thoughtBubbleObject.GetComponent<Transform>().position = transform.position;
             bubbles.Add(thoughtBubbleObject.GetComponentInChildren<ThoughtBubble>());
         }
-
-        MakeNewNo();
     }
 
     void MakeNewNo()
