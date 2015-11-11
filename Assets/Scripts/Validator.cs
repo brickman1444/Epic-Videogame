@@ -85,6 +85,7 @@ public class Validator : SingletonBehaviour<Validator>
         state = State.Success;
         winObject.SetActive(true);
         TileSpawner.instance.DisableAllTiles();
+        ButtonDisabler.instance.DisableButtons();
         coroutine = StartCoroutine(FinishLevelRoutine());
     }
 
