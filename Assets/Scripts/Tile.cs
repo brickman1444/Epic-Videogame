@@ -82,7 +82,7 @@ public class Tile : MonoBehaviour {
     [SerializeField]
     Color collisionPointColor = Color.white;
 
-    LineRenderer[] lineRenderers = new LineRenderer[2];
+    LineRenderer[] lineRenderers = new LineRenderer[3];
 
     const float halfSize = 0.51f;
     const float quarterSize = 0.26f;
@@ -319,6 +319,8 @@ public class Tile : MonoBehaviour {
                 Debug.LogError("Neither parent null");
             }
         }
+
+        newParent.HideBottomLine();
     }
 
     void ConnectLeftFromAbove(Tile newParent)
@@ -370,6 +372,8 @@ public class Tile : MonoBehaviour {
                 ConnectRightFromBelow(newParent);
             }
         }
+
+        newParent.HideBottomLine();
     }
 
     void ConnectLeftFromBelow(Tile newParent)
@@ -394,11 +398,13 @@ public class Tile : MonoBehaviour {
     {
         if (leftParent)
         {
+            leftParent.ResetBottomLine();
             leftParent.child = null;
             leftParent = null;
         }
         if (rightParent)
         {
+            rightParent.ResetBottomLine();
             rightParent.child = null;
             rightParent = null;
         }
@@ -501,6 +507,11 @@ public class Tile : MonoBehaviour {
             ResetLeftLine();
             ResetRightLine();
         }
+
+        if (!isGoalTile)
+        {
+            ResetBottomLine();
+        }
     }
 
     void ResetSingleLine()
@@ -518,6 +529,16 @@ public class Tile : MonoBehaviour {
         AttachRightLine(transform.up * idleLineVerticalDistance + transform.right * idleLineHorizontalDistance);
     }
 
+    void ResetBottomLine()
+    {
+        AttachBottomLine(transform.up * -idleLineVerticalDistance);
+    }
+
+    void HideBottomLine()
+    {
+        AttachBottomLine(Vector3.zero);
+    }
+
     void AttachLeftLine(Vector3 parentPos)
     {
         lineRenderers[0].SetPosition(1, parentPos);
@@ -526,6 +547,11 @@ public class Tile : MonoBehaviour {
     void AttachRightLine(Vector3 parentPos)
     {
         lineRenderers[1].SetPosition(1, parentPos);
+    }
+
+    void AttachBottomLine(Vector3 pos)
+    {
+        lineRenderers[2].SetPosition(1, pos);
     }
 
     RaycastHit2D Raycast( Vector3 origin, Vector3 direction, float distance )
