@@ -295,27 +295,48 @@ public class Tile : MonoBehaviour {
         }
         else
         {
-            if (leftParent == null)
+            if (leftParent == null && rightParent != null)
             {
-                Debug.Log("Connecting left parent");
-                leftParent = newParent;
-                leftParent.child = this;
-                newParent.transform.position = transform.position + transform.up * (1.0f * transform.localScale.y + snapMargin) + transform.right * (-horizontalSnapPercent * transform.localScale.x);
-                AttachLeftLine(transform.up * 1.0f + transform.right * -horizontalSnapPercent);
+                ConnectLeftFromAbove(newParent);
             }
-            else if (rightParent == null)
+            else if (rightParent == null && leftParent != null)
             {
-                Debug.Log("Connecting right parent");
-                rightParent = newParent;
-                rightParent.child = this;
-                newParent.transform.position = transform.position + transform.up * (1.0f * transform.localScale.y + snapMargin) + transform.right * (horizontalSnapPercent * transform.localScale.x);
-                AttachRightLine(transform.up * 1.0f + transform.right * horizontalSnapPercent);
+                ConnectRightFromAbove(newParent);
+            }
+            else if (leftParent == null && rightParent == null)
+            {
+                if (newParent.transform.position.x < transform.position.x)
+                {
+                    ConnectLeftFromAbove(newParent);
+                }
+                else
+                {
+                    ConnectRightFromAbove(newParent);
+                }
             }
             else
             {
                 Debug.LogError("Neither parent null");
             }
         }
+    }
+
+    void ConnectLeftFromAbove(Tile newParent)
+    {
+        Debug.Log("Connecting left parent");
+        leftParent = newParent;
+        leftParent.child = this;
+        newParent.transform.position = transform.position + transform.up * (1.0f * transform.localScale.y + snapMargin) + transform.right * (-horizontalSnapPercent * transform.localScale.x);
+        AttachLeftLine(transform.up * 1.0f + transform.right * -horizontalSnapPercent);
+    }
+
+    void ConnectRightFromAbove(Tile newParent)
+    {
+        Debug.Log("Connecting right parent");
+        rightParent = newParent;
+        rightParent.child = this;
+        newParent.transform.position = transform.position + transform.up * (1.0f * transform.localScale.y + snapMargin) + transform.right * (horizontalSnapPercent * transform.localScale.x);
+        AttachRightLine(transform.up * 1.0f + transform.right * horizontalSnapPercent);
     }
 
     void ConnectFromBelow(Tile newParent)
