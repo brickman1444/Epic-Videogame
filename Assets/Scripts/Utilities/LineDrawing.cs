@@ -7,7 +7,8 @@ public static class LineDrawing
     {
         Debug.DrawLine(startPos, endPos, Color.red, duration);
 
-        GLLineDrawer.instance.DrawLine(startPos, endPos, color, duration);
+        //GLLineDrawer.instance.DrawLine(startPos, endPos, color, duration);
+        LineDrawer.instance.DrawLine(startPos, endPos, color, duration);
     }
 
     public static void DrawCollider(Collider2D collider, Color color, float duration )
@@ -28,6 +29,6 @@ public static class LineDrawing
 
     public static void DrawX(Vector3 position, Color color, float duration)
     {
-        GLLineDrawer.instance.DrawX(position, color, duration);
+        //GLLineDrawer.instance.DrawX(position, color, duration);
     }
 }
