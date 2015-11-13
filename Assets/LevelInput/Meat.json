@@ -22,23 +22,13 @@
 		},
 		{
 			"TopKey": "Start",
-			"BottomKey": "E",
-			"Text": "Wasting resources is bad for the environment."
-		},
-		{
-			"TopKey": "Start",
 			"BottomKey": "F",
 			"Text": "Raising an animal for meat provides a relatively small amount of food."
 		},
 		{
-			"TopKey": "D,F",
-			"BottomKey": "G",
-			"Text": "Because raising animals takes more food than it provides, raising animals for meat wastes resources."
-		},
-		{
-			"TopKey": "G,E",
+			"TopKey": "F,D",
 			"BottomKey": "B",
-			"Text": "Because raising animals for meat wastes resources and wasting resources is bad for the environment, eating meat is wrong environmentally."
+			"Text": "Because raising animals takes more food than it provides, eating meat is wrong environmentally."
 		},
 		{
 			"TopKey": "Start",
