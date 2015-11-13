@@ -29,6 +29,6 @@ public static class LineDrawing
 
     public static void DrawX(Vector3 position, Color color, float duration)
     {
-        //GLLineDrawer.instance.DrawX(position, color, duration);
+        LineDrawer.instance.DrawX(position, color, duration);
     }
 }
