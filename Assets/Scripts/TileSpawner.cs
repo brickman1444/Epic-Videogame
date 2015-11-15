@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class TileSpawner : SingletonBehaviour<TileSpawner> {
 
@@ -12,6 +13,8 @@ public class TileSpawner : SingletonBehaviour<TileSpawner> {
     Transform maxSpawn = null;
     [SerializeField]
     Transform minSpawn = null;
+    [SerializeField]
+    GameObject classHeader = null;
 
     [ReadOnly]
     List<GameObject> tileObjects = new List<GameObject>();
@@ -32,6 +35,10 @@ public class TileSpawner : SingletonBehaviour<TileSpawner> {
             tileComponent.Initialize(topKey, bottomKey, text);
             tileObjects.Add(tileObject);
         }
+
+        JSONObject title = root["Class Title"];
+
+        classHeader.GetComponent<Text>().text = title.str;
     }
 
     Vector3 NextSpawnPoint()
