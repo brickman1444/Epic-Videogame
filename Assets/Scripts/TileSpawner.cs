@@ -39,6 +39,8 @@ public class TileSpawner : SingletonBehaviour<TileSpawner> {
         JSONObject title = root["Class Title"];
 
         classHeader.GetComponent<Text>().text = title.str;
+
+        JSONTextDisplay.instance.SetText(encodedString);
     }
 
     Vector3 NextSpawnPoint()

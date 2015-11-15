@@ -86,6 +86,7 @@ public class Validator : SingletonBehaviour<Validator>
         winObject.SetActive(true);
         TileSpawner.instance.DisableAllTiles();
         ButtonDisabler.instance.DisableButtons();
+        JSONTextDisplay.instance.ShowText();
         coroutine = StartCoroutine(FinishLevelRoutine());
     }
 
@@ -132,5 +133,6 @@ public class Validator : SingletonBehaviour<Validator>
         state = State.Dissent;
 
         ThoughtBubbleSpawner.instance.Spawn();
+        JSONTextDisplay.instance.HideText();
     }
 }
