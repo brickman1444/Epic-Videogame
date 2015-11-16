@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public class FinalThoughtBubbleSpawner : ThoughtBubbleSpawner
 {
@@ -16,7 +17,9 @@ public class FinalThoughtBubbleSpawner : ThoughtBubbleSpawner
     IEnumerator WaitThenCloseRoutine()
     {
         yield return new WaitForSeconds(timeToWaitBeforeEnd);
-        Debug.Log("Quit");
-        Application.Quit();
+        if (!Application.isEditor)
+        {
+            System.Diagnostics.Process.GetCurrentProcess().Kill();
+        }
     }
 }
