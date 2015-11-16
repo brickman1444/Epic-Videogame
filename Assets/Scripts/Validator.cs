@@ -13,6 +13,10 @@ public class Validator : SingletonBehaviour<Validator>
     float winWaitTime = 0.0f;
     [SerializeField]
     float failWaitTime = 0.0f;
+    [SerializeField]
+    AudioSource successSound = null;
+    [SerializeField]
+    AudioSource failSound = null;
 
     [ReadOnly]
     State state = State.Idle;
@@ -87,6 +91,7 @@ public class Validator : SingletonBehaviour<Validator>
         TileSpawner.instance.DisableAllTiles();
         ButtonDisabler.instance.DisableButtons();
         JSONTextDisplay.instance.ShowText();
+        successSound.Play();
         coroutine = StartCoroutine(FinishLevelRoutine());
     }
 
@@ -102,6 +107,7 @@ public class Validator : SingletonBehaviour<Validator>
 
         state = State.Fail;
         failObject.SetActive(true);
+        failSound.Play();
         coroutine = StartCoroutine(TurnOffFailEffectRoutine());
     }
 
@@ -116,6 +122,7 @@ public class Validator : SingletonBehaviour<Validator>
     {
         StopCoroutine(coroutine);
         coroutine = null;
+        failSound.Stop();
         failObject.SetActive(false);
     }
 
